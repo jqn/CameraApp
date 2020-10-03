@@ -23,11 +23,12 @@ const SettingsPanel = ({
   onGridPress,
   onGalleryPress,
   onSlidersPress,
+  flashIcon = 'flash-off',
 }) => {
   return (
     <View style={styles.groupContainer}>
       <MaterialCommunityIcons
-        name="flash-off"
+        name={flashIcon}
         color="#FFF"
         size={35}
         style={styles.centerIcon}

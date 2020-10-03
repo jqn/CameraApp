@@ -43,29 +43,7 @@ class CameraScreen extends Component {
     return (
       <View style={styles.container}>
         <StatusBar barStyle={'light-content'} />
-        <Camera
-        // ref={(ref) => {
-        //   this.camera = ref;
-        // }}
-        >
-          <SettingsPanel
-            onSlidersPress={() => {
-              if (this.state.showSlider) {
-                this.setState({showSlider: false});
-              } else {
-                this.setState({showSlider: true});
-              }
-            }}
-          />
-          <CameraMask>
-            <Image
-              source={Images.grid}
-              style={{width: '100%', height: '100%'}}
-              resizeMode="cover"
-            />
-          </CameraMask>
-          <ControlPanel showSlider={this.state.showSlider} />
-        </Camera>
+        <Camera />
       </View>
     );
   }

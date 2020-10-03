@@ -1,16 +1,25 @@
-import {Animated} from 'react-native';
-import {useState, useEffect} from 'react';
+export const defaultPictureTakeOptions = {
+  quality: 0.8,
+  width: undefined,
+  base64: false,
+  doNotSave: false,
+  exif: true,
+  forceUpOrientation: true,
+  fixOrientation: true,
+  orientation: 'portrait',
+};
 
-export const useAnimation = ({doAnimation, duration}) => {
-  const [animation, setAnimation] = useState(new Animated.Value(0));
-
-  useEffect(() => {
-    console.log('running useEffect:', doAnimation);
-    Animated.timing(animation, {
-      toValue: doAnimation ? 1 : 0,
-      duration,
-    }).start();
-  }, [doAnimation]);
-
-  return animation;
+export const takePicture = async (
+  {cameraRef},
+  options = defaultPictureTakeOptions,
+) => {
+  if (cameraRef && cameraRef.takePictureAsync) {
+    return cameraRef.takePictureAsync(options);
+  } else if (
+    cameraRef &&
+    cameraRef.current &&
+    cameraRef.current.takePictureAsync
+  ) {
+    return cameraRef.current.takePictureAsync(options);
+  }
 };

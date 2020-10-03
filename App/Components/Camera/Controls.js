@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const Controls = ({onCapturePress, thumbnail = false}) => {
+const Controls = ({onCapturePress, onCameraSwitchPress, thumbnail = false}) => {
   return (
     <View style={styles.container}>
       <View style={styles.group}>
@@ -68,14 +68,17 @@ const Controls = ({onCapturePress, thumbnail = false}) => {
             style={styles.centerIcon}
           />
         </TouchableOpacity>
-        <View style={styles.section}>
+        <TouchableOpacity
+          style={styles.section}
+          onPress={onCameraSwitchPress}
+          activeOpacity={0.5}>
           <MaterialIcons
             name="flip-camera-android"
             color="#FFF"
             size={50}
             style={styles.rightIcon}
           />
-        </View>
+        </TouchableOpacity>
       </View>
     </View>
   );

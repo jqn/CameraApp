@@ -12,7 +12,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const ControlPanel = ({showSlider}) => {
+const ControlPanel = ({showSlider, onCapturePress, onCameraSwitchPress}) => {
   const childRef = useRef();
   useEffect(() => {
     if (showSlider) {
@@ -27,7 +27,10 @@ const ControlPanel = ({showSlider}) => {
       <ActionSheet visible={showSlider} ref={childRef}>
         <StepSlider min={-1} max={10} LRpadding={34} single={false} />
       </ActionSheet>
-      <Controls onCapturePress={() => {}} />
+      <Controls
+        onCapturePress={onCapturePress}
+        onCameraSwitchPress={onCameraSwitchPress}
+      />
     </View>
   );
 };

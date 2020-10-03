@@ -30,3 +30,9 @@ A cross platform (iOS and Android) React Native Camera app.
 This project was put together to serve as an example to help you in building your own React Native apps. Feel free to download it and tinker with it!
 
 https://www.reactnativeschool.com/react-native-animatable-and-hooks-for-improved-error-messages
+
+https://medium.com/swlh/converting-a-complex-react-native-class-component-to-hooks-a271d3ad8300
+
+https://www.typescriptlang.org/
+
+https://github.com/react-native-community/react-native-camera/blob/master/examples/advanced/advanced/src/screens/Camera.js
