@@ -8,22 +8,16 @@ A cross platform (iOS and Android) React Native Camera app.
 
 > **Note:** Be sure you have the React Native CLI [installed on your system](https://facebook.github.io/react-native/docs/getting-started).
 
-- `git clone https://github.com/ReactNativeSchool/react-native-social-media-app.git`
-- `cd mobile`
+- `git clone https://github.com/jqn/CameraApp.git`
+- `cd CameraApp`
 - `yarn install`/`npm install`
-- `(cd ios && pod install)`
-- `cd ../server`
-- `yarn install`/`npm install`
+- `npx pod-install`
+- `npx react-native start`
 
 ### Running Mobile
 
-- `cd mobile`
-- `yarn run ios`/`npm run ios` or `yarn run android`/`npm run android`
-
-### Running Server
-
-- `cd server`
-- `yarn dev`
+- `cd CameraApp`
+- `npx react-native run-ios` or `npx react-native run-android`
 
 ---
 
