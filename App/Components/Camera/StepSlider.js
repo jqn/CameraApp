@@ -76,7 +76,6 @@ const StepSlider = ({LRpadding, min, max, single}) => {
 
   const onChange = ({windowDimensions}) => {
     setDimensions({window});
-    console.log('onChange -> window', window);
   };
 
   useEffect(() => {
@@ -88,10 +87,8 @@ const StepSlider = ({LRpadding, min, max, single}) => {
 
   const multiSliderValuesChange = (values) => {
     if (values >= 0) {
-      console.log('multiSliderValuesChange -> values', values[0] / 10);
       setValue(values[0] / 10);
     } else {
-      console.log('multiSliderValuesChange -> values', values[0]);
       setValue(values[0]);
     }
     // if (single) {

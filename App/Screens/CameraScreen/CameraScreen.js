@@ -32,10 +32,6 @@ class CameraScreen extends Component {
   };
 
   _addDeviceOrientationListener = (deviceOrientation) => {
-    console.log(
-      'App -> _addDeviceOrientationListener -> deviceOrientation',
-      deviceOrientation,
-    );
     this.setState({orientation: deviceOrientation});
   };
 

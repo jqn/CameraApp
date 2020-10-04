@@ -1,8 +1,6 @@
 import React, {useRef, useState} from 'react';
 import {Platform, StyleSheet, View} from 'react-native';
 
-import {Images} from '../../Themes';
-
 import {RNCamera} from 'react-native-camera';
 
 import SettingsPanel from './SettingsPanel';
@@ -10,9 +8,16 @@ import CameraMask from './CameraMask';
 import ControlPanel from './ControlPanel';
 import Grid from '../Grid/Grid';
 
+import {useDeviceOrientation} from '../../hooks';
+
 const styles = StyleSheet.create({
-  preview: {
+  rows: {
     flex: 1,
+    flexDirection: 'row',
+  },
+  columns: {
+    flex: 1,
+    flexDirection: 'column',
   },
   container: {
     flex: 1,
@@ -42,14 +47,17 @@ const gridIcons = {
 };
 
 const Camera = ({children}) => {
-  let cameraRef = useRef(null);
+  const deviceOrientation = useDeviceOrientation();
 
-  let [type, setType] = useState('back');
-  let [flash, setFlash] = useState('off');
-  let [whiteBalance, setWhiteBalance] = useState('auto');
-  let [grid, setGrid] = useState('large');
-  let [sliders, setSliders] = useState(false);
-  let [thumbnail, setThumbnail] = useState(null);
+  const cameraRef = useRef(null);
+
+  const [type, setType] = useState('back');
+  const [flash, setFlash] = useState('off');
+  const [whiteBalance, setWhiteBalance] = useState('auto');
+  const [grid, setGrid] = useState('large');
+  const [sliders, setSliders] = useState(false);
+  const [thumbnail, setThumbnail] = useState(null);
+  const [cameraZoom, setCameraZoom] = useState(0);
 
   const toggleCameraType = () => {
     if (type === 'back') {
@@ -105,11 +113,18 @@ const Camera = ({children}) => {
     }
   };
 
+  const zoomIn = () => {
+    setCameraZoom(cameraZoom + 0.01 > 1 ? 1 : cameraZoom + 0.04);
+  };
+
+  const zoomOut = () => {
+    setCameraZoom(cameraZoom - 0.1 < 0 ? 0 : cameraZoom - 0.1);
+  };
+
   const takePicture = async () => {
     if (cameraRef) {
       const options = {quality: 0.5};
       const data = await cameraRef.current.takePictureAsync(options);
-      console.log(data.uri);
       setThumbnail(data.uri);
     }
   };
@@ -118,11 +133,13 @@ const Camera = ({children}) => {
     <View style={styles.container}>
       <RNCamera
         ref={cameraRef}
-        style={styles.preview}
+        style={deviceOrientation === 'PORTRAIT' ? styles.columns : styles.rows}
         captureAudio={false}
         type={type}
         flashMode={flash}
-        whiteBalance={whiteBalance}>
+        whiteBalance={whiteBalance}
+        zoom={cameraZoom}
+        maxZoom={8}>
         <SettingsPanel
           onFlashPress={toggleFlash}
           onSlidersPress={toggleSliders}
@@ -136,8 +153,9 @@ const Camera = ({children}) => {
           <Grid source={grid} />
         </CameraMask>
         <ControlPanel
-          onCameraSwitchPress={toggleCameraType}
+          onThumbPress={zoomIn}
           onCapturePress={takePicture}
+          onCameraSwitchPress={toggleCameraType}
           showSlider={sliders}
           thumbnail={thumbnail}
         />

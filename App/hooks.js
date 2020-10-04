@@ -1,25 +1,23 @@
-export const defaultPictureTakeOptions = {
-  quality: 0.8,
-  width: undefined,
-  base64: false,
-  doNotSave: false,
-  exif: true,
-  forceUpOrientation: true,
-  fixOrientation: true,
-  orientation: 'portrait',
-};
+import {useState, useEffect} from 'react';
+import {Dimensions} from 'react-native';
 
-export const takePicture = async (
-  {cameraRef},
-  options = defaultPictureTakeOptions,
-) => {
-  if (cameraRef && cameraRef.takePictureAsync) {
-    return cameraRef.takePictureAsync(options);
-  } else if (
-    cameraRef &&
-    cameraRef.current &&
-    cameraRef.current.takePictureAsync
-  ) {
-    return cameraRef.current.takePictureAsync(options);
-  }
+export const useDeviceOrientation = () => {
+  const [deviceOrientation, setDeviceOrientation] = useState(null);
+
+  useEffect(() => {
+    const updateState = () => {
+      const {height, width} = Dimensions.get('window');
+      if (height >= width) {
+        setDeviceOrientation('PORTRAIT');
+      } else {
+        setDeviceOrientation('LANDSCAPE');
+      }
+    };
+
+    updateState(); // for initial render
+    Dimensions.addEventListener('change', updateState);
+    return () => Dimensions.removeEventListener('change', updateState);
+  }, []);
+
+  return deviceOrientation;
 };

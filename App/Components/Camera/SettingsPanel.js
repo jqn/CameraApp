@@ -5,8 +5,12 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
+import {getStatusBarHeight, getBottomSpace} from 'react-native-iphone-x-helper';
+
+import {useDeviceOrientation} from '../../hooks';
+
 const styles = StyleSheet.create({
-  groupContainer: {
+  rowsContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingHorizontal: 16,
@@ -14,6 +18,15 @@ const styles = StyleSheet.create({
     zIndex: 120,
     paddingTop: 32,
     paddingBottom: 4,
+  },
+  columnsContainer: {
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    paddingVertical: 16,
+    paddingLeft: getStatusBarHeight(),
+    paddingRight: 16,
+    backgroundColor: '#3a3a3a',
+    zIndex: 120,
   },
 });
 
@@ -27,8 +40,15 @@ const SettingsPanel = ({
   whiteBalanceIcon = 'wb-auto',
   gridIcon = 'grid-large',
 }) => {
+  const deviceOrientation = useDeviceOrientation();
+
   return (
-    <View style={styles.groupContainer}>
+    <View
+      style={
+        deviceOrientation === 'PORTRAIT'
+          ? styles.rowsContainer
+          : styles.columnsContainer
+      }>
       <MaterialCommunityIcons
         name={flashIcon}
         color="#FFF"
@@ -50,8 +70,8 @@ const SettingsPanel = ({
         style={styles.centerIcon}
         onPress={onGridPress}
       />
-      <FontAwesome
-        name="picture-o"
+      <MaterialIcons
+        name="photo-library"
         color="#FFF"
         size={35}
         style={styles.centerIcon}

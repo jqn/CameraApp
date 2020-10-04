@@ -5,21 +5,36 @@ import Fontisto from 'react-native-vector-icons/Fontisto';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
-import {getStatusBarHeight} from 'react-native-iphone-x-helper';
+import {getStatusBarHeight, getBottomSpace} from 'react-native-iphone-x-helper';
 
 const styles = StyleSheet.create({
-  container: {
+  columnsContainer: {
     paddingTop: 8,
-    paddingBottom: getStatusBarHeight(),
+    paddingBottom: getBottomSpace(),
     paddingHorizontal: 16,
     backgroundColor: '#3a3a3a',
   },
-  group: {
+  rowsContainer: {
+    paddingLeft: 8,
+    paddingRight: getStatusBarHeight(true),
+    paddingVertical: 16,
+    backgroundColor: '#3a3a3a',
+  },
+  rows: {
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
+  columns: {
+    flexDirection: 'column-reverse',
+    justifyContent: 'space-between',
+    height: '100%',
+  },
   section: {
     flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  stack: {
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -40,28 +55,48 @@ const styles = StyleSheet.create({
   },
 });
 
-const Controls = ({onCapturePress, onCameraSwitchPress, thumbnail = null}) => {
+const Controls = ({
+  onThumbPress,
+  onCapturePress,
+  onCameraSwitchPress,
+  thumbnail = null,
+  orientation = 'PORTRAIT',
+}) => {
+  console.log('orientation', orientation);
   return (
-    <View style={styles.container}>
-      <View style={styles.group}>
-        <View style={styles.section}>
+    <View
+      style={
+        orientation === 'PORTRAIT'
+          ? styles.columnsContainer
+          : styles.rowsContainer
+      }>
+      <View style={orientation === 'PORTRAIT' ? styles.rows : styles.columns}>
+        <View
+          style={orientation === 'PORTRAIT' ? styles.section : styles.stack}>
           {thumbnail === null ? (
             <Fontisto
               name="photograph"
               color="#FFF"
               size={50}
-              style={styles.leftIcon}
-              onPress={onCapturePress}
+              style={
+                orientation === 'PORTRAIT' ? styles.leftIcon : styles.centerIcon
+              }
+              onPress={onThumbPress}
             />
           ) : (
             <Image
-              style={[styles.square, styles.leftIcon]}
+              style={[
+                styles.square,
+                orientation === 'PORTRAIT'
+                  ? styles.leftIcon
+                  : styles.centerIcon,
+              ]}
               source={{uri: thumbnail}}
             />
           )}
         </View>
         <TouchableOpacity
-          style={styles.section}
+          style={orientation === 'PORTRAIT' ? styles.section : styles.stack}
           onPress={onCapturePress}
           activeOpacity={0.5}>
           <MaterialCommunityIcons
@@ -72,14 +107,16 @@ const Controls = ({onCapturePress, onCameraSwitchPress, thumbnail = null}) => {
           />
         </TouchableOpacity>
         <TouchableOpacity
-          style={styles.section}
+          style={orientation === 'PORTRAIT' ? styles.section : styles.stack}
           onPress={onCameraSwitchPress}
           activeOpacity={0.5}>
           <MaterialIcons
             name="flip-camera-android"
             color="#FFF"
             size={50}
-            style={styles.rightIcon}
+            style={
+              orientation === 'PORTRAIT' ? styles.rightIcon : styles.centerIcon
+            }
           />
         </TouchableOpacity>
       </View>

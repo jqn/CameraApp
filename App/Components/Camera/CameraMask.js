@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {Dimensions, View, Text, StyleSheet} from 'react-native';
+import {Dimensions, View, StyleSheet} from 'react-native';
 
 const CameraMask = ({outerMaskOpacity, backgroundColor, children}) => {
   const [deviceOrientation, setDeviceOrientation] = useState(null);
