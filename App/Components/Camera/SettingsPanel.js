@@ -25,6 +25,7 @@ const SettingsPanel = ({
   onSlidersPress,
   flashIcon = 'flash-off',
   whiteBalanceIcon = 'wb-auto',
+  gridIcon = 'grid-large',
 }) => {
   return (
     <View style={styles.groupContainer}>
@@ -43,7 +44,7 @@ const SettingsPanel = ({
         onPress={onWBalancePress}
       />
       <MaterialCommunityIcons
-        name="grid"
+        name={gridIcon}
         color="#FFF"
         size={35}
         style={styles.centerIcon}

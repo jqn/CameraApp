@@ -1,13 +1,14 @@
-import React, {useRef, useEffect, useState} from 'react';
-import {Image, Platform, StyleSheet, View} from 'react-native';
-
-import {RNCamera} from 'react-native-camera';
+import React, {useRef, useState} from 'react';
+import {Platform, StyleSheet, View} from 'react-native';
 
 import {Images} from '../../Themes';
+
+import {RNCamera} from 'react-native-camera';
 
 import SettingsPanel from './SettingsPanel';
 import CameraMask from './CameraMask';
 import ControlPanel from './ControlPanel';
+import Grid from '../Grid/Grid';
 
 const styles = StyleSheet.create({
   preview: {
@@ -16,14 +17,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  grid: {
-    width: '100%',
-    height: '100%',
-  },
 });
-
-const IS_IOS = Platform.OS === 'ios';
-// const touchCoordsSize = 100 * conf.theme.variables.sizeScaling;
 
 const flashIcons = {
   on: 'flash',
@@ -41,12 +35,19 @@ const whiteBalanceIcons = {
   fluorescent: 'wb-iridescent',
 };
 
+const gridIcons = {
+  grid: 'grid',
+  large: 'grid-large',
+  off: 'grid-off',
+};
+
 const Camera = ({children}) => {
   let cameraRef = useRef(null);
 
   let [type, setType] = useState('back');
   let [flash, setFlash] = useState('off');
   let [whiteBalance, setWhiteBalance] = useState('auto');
+  let [grid, setGrid] = useState('large');
   let [sliders, setSliders] = useState(false);
 
   const toggleCameraType = () => {
@@ -85,6 +86,16 @@ const Camera = ({children}) => {
     }
   };
 
+  const toggleGrid = () => {
+    if (grid === 'large') {
+      setGrid('grid');
+    } else if (grid === 'grid') {
+      setGrid('off');
+    } else if (grid === 'off') {
+      setGrid('large');
+    }
+  };
+
   const toggleSliders = () => {
     if (sliders) {
       setSliders(false);
@@ -113,11 +124,13 @@ const Camera = ({children}) => {
           onFlashPress={toggleFlash}
           onSlidersPress={toggleSliders}
           onWBalancePress={toggleWhiteBalance}
+          onGridPress={toggleGrid}
           flashIcon={flashIcons[flash]}
           whiteBalanceIcon={whiteBalanceIcons[whiteBalance]}
+          gridIcon={gridIcons[grid]}
         />
         <CameraMask>
-          <Image source={Images.grid} style={styles.grid} resizeMode="cover" />
+          <Grid source={grid} />
         </CameraMask>
         <ControlPanel
           onCameraSwitchPress={toggleCameraType}
