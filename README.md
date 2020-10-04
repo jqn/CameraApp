@@ -36,3 +36,7 @@ https://medium.com/swlh/converting-a-complex-react-native-class-component-to-hoo
 https://www.typescriptlang.org/
 
 https://github.com/react-native-community/react-native-camera/blob/master/examples/advanced/advanced/src/screens/Camera.js
+
+https://codedaily.io/tutorials/64/Create-a-Custom-Animated-Bottom-Action-Sheet-without-Measuring-in-React-Native
+
+https://www.toptal.com/react-native/react-native-camera-tutorial

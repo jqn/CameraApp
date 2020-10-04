@@ -32,36 +32,13 @@ const flashIcons = {
   torch: 'flashlight',
 };
 
-const MAX_ZOOM = 8; // iOS only
-const ZOOM_F = IS_IOS ? 0.01 : 0.1;
-const BACK_TYPE = RNCamera.Constants.Type.back;
-const FRONT_TYPE = RNCamera.Constants.Type.front;
-
-const WB_OPTIONS = [
-  RNCamera.Constants.WhiteBalance.auto,
-  RNCamera.Constants.WhiteBalance.sunny,
-  RNCamera.Constants.WhiteBalance.cloudy,
-  RNCamera.Constants.WhiteBalance.shadow,
-  RNCamera.Constants.WhiteBalance.incandescent,
-  RNCamera.Constants.WhiteBalance.fluorescent,
-];
-
-const WB_OPTIONS_MAP = {
-  0: 'WB',
-  1: 'SU',
-  2: 'CL',
-  3: 'SH',
-  4: 'IN',
-  5: 'FL',
-  6: 'CW',
-};
-
-const CUSTOM_WB_OPTIONS_MAP = {
-  temperature: {label: 'Temp.', min: 1000, max: 10000, steps: 500},
-  tint: {label: 'Tint', min: -20, max: 20, steps: 0.5},
-  redGainOffset: {label: 'Red', min: -1.0, max: 1.0, steps: 0.05},
-  greenGainOffset: {label: 'Green', min: -1.0, max: 1.0, steps: 0.05},
-  blueGainOffset: {label: 'Blue', min: -1.0, max: 1.0, steps: 0.05},
+const whiteBalanceIcons = {
+  auto: 'wb-auto',
+  sunny: 'wb-sunny',
+  cloudy: 'wb-cloudy',
+  shadow: 'wb-shade',
+  incandescent: 'wb-incandescent',
+  fluorescent: 'wb-iridescent',
 };
 
 const Camera = ({children}) => {
@@ -69,6 +46,7 @@ const Camera = ({children}) => {
 
   let [type, setType] = useState('back');
   let [flash, setFlash] = useState('off');
+  let [whiteBalance, setWhiteBalance] = useState('auto');
   let [sliders, setSliders] = useState(false);
 
   const toggleCameraType = () => {
@@ -91,11 +69,19 @@ const Camera = ({children}) => {
     }
   };
 
-  const takePicture = async () => {
-    if (cameraRef) {
-      const options = {quality: 0.5, base64: true};
-      const data = await cameraRef.current.takePictureAsync(options);
-      console.log(data.uri);
+  const toggleWhiteBalance = () => {
+    if (whiteBalance === 'auto') {
+      setWhiteBalance('sunny');
+    } else if (whiteBalance === 'sunny') {
+      setWhiteBalance('cloudy');
+    } else if (whiteBalance === 'cloudy') {
+      setWhiteBalance('shadow');
+    } else if (whiteBalance === 'shadow') {
+      setWhiteBalance('incandescent');
+    } else if (whiteBalance === 'incandescent') {
+      setWhiteBalance('fluorescent');
+    } else if (whiteBalance === 'fluorescent') {
+      setWhiteBalance('auto');
     }
   };
 
@@ -104,6 +90,14 @@ const Camera = ({children}) => {
       setSliders(false);
     } else {
       setSliders(true);
+    }
+  };
+
+  const takePicture = async () => {
+    if (cameraRef) {
+      const options = {quality: 0.5, base64: true};
+      const data = await cameraRef.current.takePictureAsync(options);
+      console.log(data.uri);
     }
   };
 
@@ -118,7 +112,9 @@ const Camera = ({children}) => {
         <SettingsPanel
           onFlashPress={toggleFlash}
           onSlidersPress={toggleSliders}
+          onWBalancePress={toggleWhiteBalance}
           flashIcon={flashIcons[flash]}
+          whiteBalanceIcon={whiteBalanceIcons[whiteBalance]}
         />
         <CameraMask>
           <Image source={Images.grid} style={styles.grid} resizeMode="cover" />

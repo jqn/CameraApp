@@ -24,6 +24,7 @@ const SettingsPanel = ({
   onGalleryPress,
   onSlidersPress,
   flashIcon = 'flash-off',
+  whiteBalanceIcon = 'wb-auto',
 }) => {
   return (
     <View style={styles.groupContainer}>
@@ -35,7 +36,7 @@ const SettingsPanel = ({
         onPress={onFlashPress}
       />
       <MaterialIcons
-        name="wb-auto"
+        name={whiteBalanceIcon}
         color="#FFF"
         size={35}
         style={styles.centerIcon}
