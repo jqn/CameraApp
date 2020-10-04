@@ -1,4 +1,4 @@
-## React Native Social Media App
+## React Native Camera App
 
 A cross platform (iOS and Android) React Native Camera app.
 
@@ -14,7 +14,7 @@ A cross platform (iOS and Android) React Native Camera app.
 - `npx pod-install`
 - `npx react-native start`
 
-### Running Mobile
+### Running
 
 - `cd CameraApp`
 - `npx react-native run-ios` or `npx react-native run-android`
