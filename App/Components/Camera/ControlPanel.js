@@ -12,7 +12,12 @@ const styles = StyleSheet.create({
   },
 });
 
-const ControlPanel = ({showSlider, onCapturePress, onCameraSwitchPress}) => {
+const ControlPanel = ({
+  showSlider,
+  onCapturePress,
+  onCameraSwitchPress,
+  thumbnail,
+}) => {
   const childRef = useRef();
   useEffect(() => {
     if (showSlider) {
@@ -30,6 +35,7 @@ const ControlPanel = ({showSlider, onCapturePress, onCameraSwitchPress}) => {
       <Controls
         onCapturePress={onCapturePress}
         onCameraSwitchPress={onCameraSwitchPress}
+        thumbnail={thumbnail}
       />
     </View>
   );

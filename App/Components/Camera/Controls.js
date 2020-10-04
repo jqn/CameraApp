@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, TouchableOpacity, View} from 'react-native';
+import {Image, StyleSheet, TouchableOpacity, View} from 'react-native';
 
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -40,20 +40,23 @@ const styles = StyleSheet.create({
   },
 });
 
-const Controls = ({onCapturePress, onCameraSwitchPress, thumbnail = false}) => {
+const Controls = ({onCapturePress, onCameraSwitchPress, thumbnail = null}) => {
   return (
     <View style={styles.container}>
       <View style={styles.group}>
         <View style={styles.section}>
-          {thumbnail ? (
-            <View style={[styles.square, styles.leftIcon]} />
-          ) : (
+          {thumbnail === null ? (
             <Fontisto
               name="photograph"
               color="#FFF"
               size={50}
               style={styles.leftIcon}
-              // onPress={onCapturePress}
+              onPress={onCapturePress}
+            />
+          ) : (
+            <Image
+              style={[styles.square, styles.leftIcon]}
+              source={{uri: thumbnail}}
             />
           )}
         </View>

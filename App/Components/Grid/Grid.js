@@ -14,7 +14,6 @@ const Grid = ({source = 'large'}) => {
   const [gridSource, setGridSource] = useState(Images.largeGrid);
 
   useEffect(() => {
-    console.log('Grid -> source', source);
     if (source === 'large') {
       setGridSource(Images.largeGrid);
     } else if (source === 'grid') {

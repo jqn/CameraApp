@@ -49,6 +49,7 @@ const Camera = ({children}) => {
   let [whiteBalance, setWhiteBalance] = useState('auto');
   let [grid, setGrid] = useState('large');
   let [sliders, setSliders] = useState(false);
+  let [thumbnail, setThumbnail] = useState(null);
 
   const toggleCameraType = () => {
     if (type === 'back') {
@@ -106,9 +107,10 @@ const Camera = ({children}) => {
 
   const takePicture = async () => {
     if (cameraRef) {
-      const options = {quality: 0.5, base64: true};
+      const options = {quality: 0.5};
       const data = await cameraRef.current.takePictureAsync(options);
       console.log(data.uri);
+      setThumbnail(data.uri);
     }
   };
 
@@ -119,7 +121,8 @@ const Camera = ({children}) => {
         style={styles.preview}
         captureAudio={false}
         type={type}
-        flashMode={flash}>
+        flashMode={flash}
+        whiteBalance={whiteBalance}>
         <SettingsPanel
           onFlashPress={toggleFlash}
           onSlidersPress={toggleSliders}
@@ -136,6 +139,7 @@ const Camera = ({children}) => {
           onCameraSwitchPress={toggleCameraType}
           onCapturePress={takePicture}
           showSlider={sliders}
+          thumbnail={thumbnail}
         />
       </RNCamera>
     </View>
