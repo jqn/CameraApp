@@ -2,7 +2,7 @@
 
 A cross platform (iOS and Android) React Native Camera app.
 
-![Reference Designs](./assets/iPhoneXCameraApp.png)
+![Reference Designs](./assets/iPhoneXCameraAppMock.png)
 
 ### Installation
 
