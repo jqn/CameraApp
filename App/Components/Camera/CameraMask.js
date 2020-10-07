@@ -12,12 +12,10 @@ const CameraMask = ({outerMaskOpacity, backgroundColor, children}) => {
         let ratioHeight = (3 * width) / 4;
         setDeviceOrientation('portrait');
         setRatio({height: ratioHeight, width: width});
-        console.log('updateState -> setDeviceOrientation', 'portrait');
       } else {
         setDeviceOrientation('landscape');
         let ratioWidth = (4 * height) / 3;
         setRatio({height: height, width: ratioWidth});
-        console.log('updateState -> setDeviceOrientation', 'landscape');
       }
     };
 
@@ -93,9 +91,6 @@ const CameraMask = ({outerMaskOpacity, backgroundColor, children}) => {
 
 const styles = StyleSheet.create({
   container: {
-    // position: 'absolute',
-    // top: 0,
-    // left: 0,
     alignItems: 'center',
     justifyContent: 'center',
     ...StyleSheet.absoluteFillObject,

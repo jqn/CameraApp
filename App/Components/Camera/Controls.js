@@ -62,7 +62,6 @@ const Controls = ({
   thumbnail = null,
   orientation = 'PORTRAIT',
 }) => {
-  console.log('orientation', orientation);
   return (
     <View
       style={

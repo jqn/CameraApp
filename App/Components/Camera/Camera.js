@@ -2,6 +2,7 @@ import React, {useRef, useState} from 'react';
 import {Platform, StyleSheet, View} from 'react-native';
 
 import {RNCamera} from 'react-native-camera';
+import {useNavigation} from '@react-navigation/native';
 
 import SettingsPanel from './SettingsPanel';
 import CameraMask from './CameraMask';
@@ -48,6 +49,7 @@ const gridIcons = {
 
 const Camera = ({children}) => {
   const deviceOrientation = useDeviceOrientation();
+  const navigation = useNavigation();
 
   const cameraRef = useRef(null);
 
@@ -153,9 +155,9 @@ const Camera = ({children}) => {
           <Grid source={grid} />
         </CameraMask>
         <ControlPanel
-          onThumbPress={zoomIn}
           onCapturePress={takePicture}
           onCameraSwitchPress={toggleCameraType}
+          onThumbPress={() => navigation.navigate('Gallery')}
           showSlider={sliders}
           thumbnail={thumbnail}
         />

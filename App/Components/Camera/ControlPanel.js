@@ -30,7 +30,6 @@ const ControlPanel = ({
   const childRef = useRef();
 
   const deviceOrientation = useDeviceOrientation();
-  console.log('deviceOrientation', deviceOrientation);
 
   useEffect(() => {
     if (showSlider) {
