@@ -21,3 +21,36 @@ export const useDeviceOrientation = () => {
 
   return deviceOrientation;
 };
+
+export const useScreenDimensions = () => {
+  const [screenData, setScreenData] = useState(Dimensions.get('screen'));
+
+  useEffect(() => {
+    const onChange = (result) => {
+      setScreenData(result.screen);
+    };
+
+    Dimensions.addEventListener('change', onChange);
+
+    return () => Dimensions.removeEventListener('change', onChange);
+  });
+
+  return {
+    ...screenData,
+    isLandscape: screenData.width > screenData.height,
+  };
+};
+
+// export default () => {
+//   const screenData = useScreenDimensions();
+
+//   return (
+//     <View
+//       style={[
+//         styles.container,
+//         screenData.isLandscape && styles.containerLandscape,
+//       ]}>
+//       <View style={[styles.box, {width: screenData.width / 2}]} />
+//     </View>
+//   );
+// };

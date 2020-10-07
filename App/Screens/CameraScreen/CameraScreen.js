@@ -1,12 +1,9 @@
 import React, {Component} from 'react';
-import {Image, StatusBar, StyleSheet, View} from 'react-native';
-
-import {Images} from '../../Themes';
+import {StatusBar, StyleSheet, View} from 'react-native';
 
 import Orientation from 'react-native-orientation-locker';
 
-import {Camera, ControlPanel, CameraMask} from '../../Components/Camera';
-import SettingsPanel from '../../Components/Camera/SettingsPanel';
+import {Camera} from '../../Components/Camera';
 
 const styles = StyleSheet.create({
   container: {
@@ -18,7 +15,6 @@ class CameraScreen extends Component {
   state = {orientation: 'PORTRAIT', showSlider: false};
 
   componentDidMount = () => {
-    // Orientation.lockToPortrait();
     Orientation.unlockAllOrientations();
     Orientation.addDeviceOrientationListener(
       this._addDeviceOrientationListener,

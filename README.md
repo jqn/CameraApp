@@ -34,3 +34,5 @@ https://github.com/react-native-community/react-native-camera/blob/master/exampl
 https://codedaily.io/tutorials/64/Create-a-Custom-Animated-Bottom-Action-Sheet-without-Measuring-in-React-Native
 
 https://www.toptal.com/react-native/react-native-camera-tutorial
+
+https://code.tutsplus.com/tutorials/common-react-native-app-layouts-gallery-page--cms-27642
