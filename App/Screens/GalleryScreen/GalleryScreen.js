@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {StatusBar, StyleSheet, View} from 'react-native';
 
-import {GridList} from '../../Components/Gallery';
+import Gallery from '../../Components/Gallery';
 
 const styles = StyleSheet.create({
   container: {
@@ -14,7 +14,7 @@ class GalleryScreen extends Component {
     return (
       <View style={styles.container}>
         <StatusBar barStyle={'light-content'} />
-        <GridList />
+        <Gallery />
       </View>
     );
   }

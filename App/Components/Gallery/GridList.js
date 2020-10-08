@@ -1,10 +1,11 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   Dimensions,
   Image,
   StatusBar,
   SafeAreaView,
   StyleSheet,
+  TouchableOpacity,
   View,
   FlatList,
 } from 'react-native';
@@ -50,9 +51,6 @@ const styles = StyleSheet.create({
   itemInvisible: {
     backgroundColor: 'transparent',
   },
-  itemText: {
-    color: '#fff',
-  },
   photo: {
     width: Dimensions.get('window').width / numColumns - numMargins,
     height: Dimensions.get('window').width / numColumns,
@@ -60,7 +58,6 @@ const styles = StyleSheet.create({
 });
 
 const formatData = (data) => {
-  console.log(Dimensions.get('window').width / 3);
   const numberOfFullRows = Math.floor(data.length / numColumns);
 
   let numberOfElementsLastRow = data.length - numberOfFullRows * numColumns;
@@ -75,20 +72,30 @@ const formatData = (data) => {
   return data;
 };
 
-const Item = ({src}) => (
-  <View style={styles.item}>
-    <Image resizeMode={'cover'} style={styles.photo} source={src} />
-  </View>
+const Item = ({src, onPress, style}) => (
+  <TouchableOpacity onPress={onPress} style={[styles.item, style]}>
+    <Image resizeMode="cover" style={styles.photo} source={src} />
+  </TouchableOpacity>
 );
 
 const EmptyItem = () => <View style={[styles.item, styles.itemInvisible]} />;
 
 const GridList = ({columns = 3}) => {
+  const [selectedId, setSelectedId] = useState(null);
+
   const renderItem = ({item}) => {
+    const backgroundColor = item.id === selectedId ? '#6e3b6e' : '#f9c2ff';
+
     if (item.empty === true) {
       return <EmptyItem />;
     }
-    return <Item src={item.src} />;
+    return (
+      <Item
+        src={item.src}
+        style={backgroundColor}
+        onPress={() => setSelectedId(item.id)}
+      />
+    );
   };
 
   return (
@@ -98,6 +105,7 @@ const GridList = ({columns = 3}) => {
         renderItem={renderItem}
         keyExtractor={(item) => item.id}
         numColumns={columns}
+        extraData={selectedId}
       />
     </SafeAreaView>
   );

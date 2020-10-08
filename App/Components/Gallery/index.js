@@ -1,3 +1,14 @@
+import React from 'react';
 import GridList from './GridList';
+import Preview from './Preview';
 
-export {GridList};
+const Gallery = () => {
+  return (
+    <>
+      <GridList />
+      <Preview />
+    </>
+  );
+};
+
+export default Gallery;

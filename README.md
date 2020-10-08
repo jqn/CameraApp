@@ -36,3 +36,11 @@ https://codedaily.io/tutorials/64/Create-a-Custom-Animated-Bottom-Action-Sheet-w
 https://www.toptal.com/react-native/react-native-camera-tutorial
 
 https://code.tutsplus.com/tutorials/common-react-native-app-layouts-gallery-page--cms-27642
+
+Slider
+
+https://github.com/KPS250/React-Native-FlatList-Slider
+
+https://snack.expo.io/@hrastnik/carousel
+
+https://dev.to/lloyds-digital/let-s-create-a-carousel-in-react-native-4ae2
