@@ -17,7 +17,7 @@ const HorizontalSlider = ({data, indexCallback}) => {
   const [selectedId, setSelectedId] = useState(null);
 
   const renderItem = ({item}) => {
-    console.log('renderItem -> item', item);
+    // console.log('renderItem -> item', item);
     const backgroundColor = item.id === selectedId ? '#6e3b6e' : '#f9c2ff';
 
     const setIndex = (selectedItem) => {

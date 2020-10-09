@@ -1,5 +1,11 @@
 import React, {useState} from 'react';
-import {Dimensions, Modal, StyleSheet, View} from 'react-native';
+import {
+  Dimensions,
+  Modal,
+  StyleSheet,
+  View,
+  TouchableOpacity,
+} from 'react-native';
 
 import GridList from './GridList';
 import HorizontalSlider from '../HorizontalSlider/HorizontalSlider';
@@ -28,7 +34,7 @@ import HorizontalSlider from '../HorizontalSlider/HorizontalSlider';
 //   },
 // ];
 
-const OVERLAY_DATA = [
+const DATA = [
   {
     id: '1',
     title: 'First Item',
@@ -51,8 +57,8 @@ const OVERLAY_DATA = [
   },
 ];
 
-const gridList = OVERLAY_DATA;
-const overlayList = OVERLAY_DATA;
+// const gridList = OVERLAY_DATA;
+// const overlayList = OVERLAY_DATA;
 
 const styles = StyleSheet.create({
   centeredView: {
@@ -61,31 +67,38 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0,0,0, 0.9)',
   },
   modalView: {
-    margin: 18,
+    // margin: 18,
+    backgroundColor: '#454545',
   },
 });
 
 const Gallery = ({images}) => {
   const [visible, setVisible] = useState(false);
-  const [items, setItems] = useState([]);
+  const [initialIndex, setInitialIndex] = useState(0);
 
   // const screenWidth = Math.round(Dimensions.get('window').width);
-  console.log('DATA', OVERLAY_DATA);
+  console.log('DATA', DATA);
   return (
     <View style={{flex: 1}}>
       <GridList
-        data={gridList}
-        // onItemPress={(item) => console.log('item', item)}
-        onItemPress={() => {
+        data={DATA}
+        indexCallback={(index) => {
+          setInitialIndex(index);
           setVisible(true);
-          // setItems(OVERLAY_DATA);
-          // console.log('Gallery -> images', OVERLAY_DATA);
         }}
       />
       <Modal animationType="fade" transparent={true} visible={visible}>
-        <View style={styles.centeredView}>
+        <View
+          activeOpacity={1}
+          style={styles.centeredView}
+          // onLongPress={() => setVisible(false)}
+        >
           <View style={styles.modalView}>
-            <HorizontalSlider data={overlayList} />
+            <HorizontalSlider
+              data={DATA}
+              indexCallback={(index) => console.log('Index', index)}
+              initialIndex={initialIndex}
+            />
           </View>
         </View>
       </Modal>

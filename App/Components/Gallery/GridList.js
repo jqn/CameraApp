@@ -81,9 +81,14 @@ const Item = ({src, onPress, style, index}) => (
 
 const EmptyItem = () => <View style={[styles.item, styles.itemInvisible]} />;
 
-const GridList = ({columns = 3, data = [], onItemPress}) => {
+const GridList = ({columns = 3, data = [], indexCallback}) => {
   const [selectedId, setSelectedId] = useState(null);
   // const [listData, setListData] = useState(data);
+
+  const setIndex = (selectedItem, index) => {
+    setSelectedId(selectedItem.id);
+    indexCallback(index);
+  };
 
   const renderItem = ({item, index}) => {
     const backgroundColor = item.id === selectedId ? '#727272' : '#3a3a3a';
@@ -96,7 +101,7 @@ const GridList = ({columns = 3, data = [], onItemPress}) => {
       <Item
         src={item.src}
         style={backgroundColor}
-        onPress={onItemPress}
+        onPress={() => setIndex(item, index)}
         index={index}
       />
     );
