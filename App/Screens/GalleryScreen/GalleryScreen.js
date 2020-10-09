@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {StatusBar, StyleSheet, View} from 'react-native';
 
-import Gallery from '../../Components/Gallery';
+import Gallery from '../../Components/Gallery/Gallery';
 
 const styles = StyleSheet.create({
   container: {

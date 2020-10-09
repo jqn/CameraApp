@@ -58,6 +58,7 @@ const styles = StyleSheet.create({
 });
 
 const formatData = (data) => {
+  const formattedData = [];
   const numberOfFullRows = Math.floor(data.length / numColumns);
 
   let numberOfElementsLastRow = data.length - numberOfFullRows * numColumns;
@@ -65,14 +66,14 @@ const formatData = (data) => {
     numberOfElementsLastRow !== numColumns &&
     numberOfElementsLastRow !== 0
   ) {
-    data.push({key: `blank-${numberOfElementsLastRow}`, empty: true});
+    formattedData.push({id: `blank-${numberOfElementsLastRow}`, empty: true});
     numberOfElementsLastRow++;
   }
 
-  return data;
+  return [...data, ...formattedData];
 };
 
-const Item = ({src, onPress, style}) => (
+const Item = ({src, onPress, style, index}) => (
   <TouchableOpacity onPress={onPress} style={[styles.item, style]}>
     <Image resizeMode="cover" style={styles.photo} source={src} />
   </TouchableOpacity>
@@ -80,20 +81,23 @@ const Item = ({src, onPress, style}) => (
 
 const EmptyItem = () => <View style={[styles.item, styles.itemInvisible]} />;
 
-const GridList = ({columns = 3}) => {
+const GridList = ({columns = 3, data = [], onItemPress}) => {
   const [selectedId, setSelectedId] = useState(null);
+  // const [listData, setListData] = useState(data);
 
-  const renderItem = ({item}) => {
-    const backgroundColor = item.id === selectedId ? '#6e3b6e' : '#f9c2ff';
+  const renderItem = ({item, index}) => {
+    const backgroundColor = item.id === selectedId ? '#727272' : '#3a3a3a';
 
     if (item.empty === true) {
       return <EmptyItem />;
     }
+
     return (
       <Item
         src={item.src}
         style={backgroundColor}
-        onPress={() => setSelectedId(item.id)}
+        onPress={onItemPress}
+        index={index}
       />
     );
   };
@@ -101,7 +105,7 @@ const GridList = ({columns = 3}) => {
   return (
     <SafeAreaView style={styles.container}>
       <FlatList
-        data={formatData(DATA, columns)}
+        data={formatData(data, columns)}
         renderItem={renderItem}
         keyExtractor={(item) => item.id}
         numColumns={columns}

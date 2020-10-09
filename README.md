@@ -37,10 +37,18 @@ https://www.toptal.com/react-native/react-native-camera-tutorial
 
 https://code.tutsplus.com/tutorials/common-react-native-app-layouts-gallery-page--cms-27642
 
-Slider
+Slider Gallery
 
 https://github.com/KPS250/React-Native-FlatList-Slider
+
+https://medium.com/@KPS250/creating-image-slider-with-flatlist-in-react-native-1815d3793d99
 
 https://snack.expo.io/@hrastnik/carousel
 
 https://dev.to/lloyds-digital/let-s-create-a-carousel-in-react-native-4ae2
+
+https://blog.logrocket.com/use-hooks-and-context-not-react-and-redux/
+
+https://github.com/tutsplus/practical-animation-examples-in-react-native/blob/master/src/pages/ExpandPage.js
+
+https://github.com/nathvarun/professional-animations-in-react-native/blob/master/02-uber-login-screen/part-2/App.js
