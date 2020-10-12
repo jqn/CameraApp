@@ -83,7 +83,6 @@ const EmptyItem = () => <View style={[styles.item, styles.itemInvisible]} />;
 
 const GridList = ({columns = 3, data = [], indexCallback}) => {
   const [selectedId, setSelectedId] = useState(null);
-  // const [listData, setListData] = useState(data);
 
   const setIndex = (selectedItem, index) => {
     setSelectedId(selectedItem.id);

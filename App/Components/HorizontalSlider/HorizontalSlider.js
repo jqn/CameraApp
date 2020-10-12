@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useCallback} from 'react';
 import {
   FlatList,
   Image,
@@ -26,12 +26,37 @@ const Item = ({image, style}) => (
   </View>
 );
 
-const HorizontalSlider = ({data, indexCallback, indicator, initialIndex}) => {
+const HorizontalSlider = ({
+  data,
+  indexCallback,
+  indicator = true,
+  initialIndex,
+  length,
+  index = 0,
+  indicatorStyle = {position: 'absolute', bottom: 20},
+  indicatorContainerStyle,
+  indicatorActiveColor,
+  indicatorInActiveColor,
+  indicatorActiveWidth,
+}) => {
+  const [selectedId, setSelectedId] = useState(null);
+  const [selectedIndex, setSelectedIndex] = useState(0);
+
   const itemWidth = Math.round(Dimensions.get('window').width);
   const separatorWidth = 0;
   const totalItemWidth = itemWidth + separatorWidth;
 
-  const [selectedId, setSelectedId] = useState(null);
+  const viewConfigRef = React.useRef({
+    viewAreaCoveragePercentThreshold: 50,
+    waitForInteraction: true,
+    minimumViewTime: 5,
+  });
+
+  const onViewRef = React.useRef(({viewableItems, changed}) => {
+    if (viewableItems.length > 0) {
+      setSelectedIndex(viewableItems[0].index);
+    }
+  });
 
   const renderItem = ({item}) => {
     const backgroundColor = item.id === selectedId ? '#727272' : '#3a3a3a';
@@ -61,6 +86,11 @@ const HorizontalSlider = ({data, indexCallback, indicator, initialIndex}) => {
         bounces={false}
         showsHorizontalScrollIndicator={false}
         renderItem={renderItem}
+        windowSize={1}
+        initialNumToRender={1}
+        maxToRenderPerBatch={1}
+        removeClippedSubviews={true}
+        initialScrollIndex={initialIndex}
         keyExtractor={(item) => item.id}
         extraData={selectedId}
         getItemLayout={(data, index) => ({
@@ -68,13 +98,18 @@ const HorizontalSlider = ({data, indexCallback, indicator, initialIndex}) => {
           offset: totalItemWidth * index,
           index,
         })}
-        windowSize={1}
-        initialNumToRender={1}
-        maxToRenderPerBatch={1}
-        removeClippedSubviews={true}
-        initialScrollIndex={initialIndex}
+        onViewableItemsChanged={onViewRef.current}
+        viewabilityConfig={viewConfigRef.current}
       />
-      <Indicator />
+      {indicator && (
+        <Indicator
+          itemCount={4}
+          currentIndex={selectedIndex % data.length}
+          indicatorActiveColor="#ff5f00"
+          indicatorInActiveColor={'#ffffff'}
+          indicatorActiveWidth={30}
+        />
+      )}
     </SafeAreaView>
   );
 };
