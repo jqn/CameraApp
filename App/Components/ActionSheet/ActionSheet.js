@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const ActionSheet = forwardRef(({visible, children}, ref) => {
+const ActionSheet = forwardRef(({children}, ref) => {
   const animatedValue = useRef(new Animated.Value(0)).current;
 
   const slide = animatedValue.interpolate({

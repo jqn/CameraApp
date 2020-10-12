@@ -58,7 +58,6 @@ const CameraMask = ({outerMaskOpacity, backgroundColor, children}) => {
               styles.maskInner,
               {width: ratio.width, height: ratio.height},
             ]}>
-            {/* <Text>{`Window Dimensions: height - ${ratio.height}, width - ${ratio.width}`}</Text> */}
             {children}
           </View>
           <View

@@ -1,38 +1,19 @@
 import React, {useState} from 'react';
 import {
-  Alert,
   FlatList,
   Image,
   Dimensions,
-  Modal,
   SafeAreaView,
   StyleSheet,
-  Text,
-  TouchableOpacity,
   View,
 } from 'react-native';
 
 import Indicator from './Indicator';
 
 const styles = StyleSheet.create({
-  container: {
-    // flex: 1,
-    // marginTop: StatusBar.currentHeight || 0,
-    // backgroundColor: 'red',
-  },
   item: {
     backgroundColor: '#454545',
-    // backgroundColor: 'red',
-    // alignItems: 'center',
-    // justifyContent: 'center',
-    // flex: 1,
-    // padding: 20,
-    // marginVertical: 8,
-    // marginHorizontal: 16,
   },
-  // title: {
-  //   fontSize: 32,
-  // },
   photo: {
     width: Math.round(Dimensions.get('window').width),
     height: 200,
@@ -70,7 +51,7 @@ const HorizontalSlider = ({data, indexCallback, indicator, initialIndex}) => {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView>
       <FlatList
         data={data}
         horizontal
@@ -92,24 +73,8 @@ const HorizontalSlider = ({data, indexCallback, indicator, initialIndex}) => {
         maxToRenderPerBatch={1}
         removeClippedSubviews={true}
         initialScrollIndex={initialIndex}
-        // contentContainerStyle={{paddingHorizontal: 0}}
       />
       <Indicator />
-      {/* {indicator && (
-        <Indicator
-        itemCount={data.length}
-        currentIndex={setSelectedId % data.length}
-        indicatorStyle={this.props.indicatorStyle}
-        indicatorContainerStyle={[
-          styles.indicatorContainerStyle,
-          this.props.indicatorContainerStyle,
-        ]}
-        indicatorActiveColor={this.props.indicatorActiveColor}
-        indicatorInActiveColor={this.props.indicatorInActiveColor}
-        indicatorActiveWidth={this.props.indicatorActiveWidth}
-        style={{...styles.indicator, ...this.props.indicatorStyle}}
-        />
-      )} */}
     </SafeAreaView>
   );
 };

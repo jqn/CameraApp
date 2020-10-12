@@ -1,5 +1,5 @@
 import React, {useRef, useState} from 'react';
-import {Platform, StyleSheet, View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 
 import {RNCamera} from 'react-native-camera';
 import {useNavigation} from '@react-navigation/native';
