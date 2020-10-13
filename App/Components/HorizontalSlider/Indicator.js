@@ -73,8 +73,8 @@ const styles = StyleSheet.create({
     borderRadius: 3,
     marginRight: 5,
   },
-  active: {backgroundColor: 'red'},
-  inactive: {backgroundColor: 'green'},
+  active: {backgroundColor: '#ff5f00'},
+  inactive: {backgroundColor: '#ffffff'},
 });
 
 export default Indicator;

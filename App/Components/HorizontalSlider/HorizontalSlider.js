@@ -1,14 +1,21 @@
-import React, {useState, useCallback} from 'react';
+import React, {useState, useRef} from 'react';
 import {
   FlatList,
   Image,
+  LayoutAnimation,
   Dimensions,
+  NativeModules,
   SafeAreaView,
   StyleSheet,
   View,
 } from 'react-native';
 
 import Indicator from './Indicator';
+
+const {UIManager} = NativeModules;
+
+UIManager.setLayoutAnimationEnabledExperimental &&
+  UIManager.setLayoutAnimationEnabledExperimental(true);
 
 const styles = StyleSheet.create({
   item: {
@@ -40,11 +47,13 @@ const HorizontalSlider = ({
   indicatorActiveWidth,
 }) => {
   const [selectedId, setSelectedId] = useState(null);
-  const [selectedIndex, setSelectedIndex] = useState(0);
+  const [selectedIndex, setSelectedIndex] = useState(initialIndex);
 
   const itemWidth = Math.round(Dimensions.get('window').width);
   const separatorWidth = 0;
   const totalItemWidth = itemWidth + separatorWidth;
+
+  const slider = useRef(null);
 
   const viewConfigRef = React.useRef({
     viewAreaCoveragePercentThreshold: 50,
@@ -54,7 +63,21 @@ const HorizontalSlider = ({
 
   const onViewRef = React.useRef(({viewableItems, changed}) => {
     if (viewableItems.length > 0) {
-      setSelectedIndex(viewableItems[0].index);
+      let currentIndex = viewableItems[0].index;
+      setSelectedIndex(currentIndex);
+      // LayoutAnimation.spring();
+      LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+      // LayoutAnimation.configureNext(
+      //   LayoutAnimation.create(
+      //     300,
+      //     LayoutAnimation.Types.easeIn,
+      //     LayoutAnimation.Properties.opacity,
+      //   ),
+      // );
+
+      if (indexCallback) {
+        indexCallback(currentIndex);
+      }
     }
   });
 
@@ -78,6 +101,7 @@ const HorizontalSlider = ({
   return (
     <SafeAreaView>
       <FlatList
+        ref={slider}
         data={data}
         horizontal
         pagingEnabled={true}
@@ -103,8 +127,8 @@ const HorizontalSlider = ({
       />
       {indicator && (
         <Indicator
-          itemCount={4}
-          currentIndex={selectedIndex % data.length}
+          itemCount={data.length}
+          currentIndex={selectedIndex}
           indicatorActiveColor="#ff5f00"
           indicatorInActiveColor={'#ffffff'}
           indicatorActiveWidth={30}

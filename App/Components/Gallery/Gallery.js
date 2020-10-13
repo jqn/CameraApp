@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Modal, StyleSheet, View} from 'react-native';
+import {Modal, StyleSheet, TouchableOpacity, View} from 'react-native';
 
 import GridList from './GridList';
 import HorizontalSlider from '../HorizontalSlider/HorizontalSlider';
@@ -39,6 +39,9 @@ const styles = StyleSheet.create({
   modalView: {
     backgroundColor: '#454545',
   },
+  presssble: {
+    flex: 1,
+  },
 });
 
 const Gallery = ({images}) => {
@@ -55,7 +58,11 @@ const Gallery = ({images}) => {
         }}
       />
       <Modal animationType="fade" transparent={true} visible={visible}>
-        <View activeOpacity={1} style={styles.centeredView}>
+        <View style={styles.centeredView}>
+          <TouchableOpacity
+            onPress={() => setVisible(false)}
+            style={styles.presssble}
+          />
           <View style={styles.modalView}>
             <HorizontalSlider
               data={DATA}
@@ -63,6 +70,10 @@ const Gallery = ({images}) => {
               initialIndex={initialIndex}
             />
           </View>
+          <TouchableOpacity
+            onPress={() => setVisible(false)}
+            style={styles.presssble}
+          />
         </View>
       </Modal>
     </View>
