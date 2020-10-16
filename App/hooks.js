@@ -41,16 +41,33 @@ export const useScreenDimensions = () => {
   };
 };
 
-// export default () => {
-//   const screenData = useScreenDimensions();
+export const useRatio = () => {
+  // Common ratios
+  // Square - 1:1 Ratio
+  // Rectangle - 4:3 Ratio
+  // Wide - 16:9 Ratio
+  // https://www.shutterstock.com/blog/common-aspect-ratios-photo-image-sizes
 
-//   return (
-//     <View
-//       style={[
-//         styles.container,
-//         screenData.isLandscape && styles.containerLandscape,
-//       ]}>
-//       <View style={[styles.box, {width: screenData.width / 2}]} />
-//     </View>
-//   );
-// };
+  const [ratio, setRatio] = useState(null);
+
+  useEffect(() => {
+    const updateState = () => {
+      const {height, width} = Dimensions.get('window');
+      if (height > width) {
+        // Portrait
+        let ratioHeight = (3 * width) / 4;
+        setRatio({height: ratioHeight, width: width});
+      } else {
+        // Landscape
+        let ratioWidth = (4 * height) / 3;
+        setRatio({height: height, width: ratioWidth});
+      }
+    };
+
+    updateState(); // for initial render
+    Dimensions.addEventListener('change', updateState);
+    return () => Dimensions.removeEventListener('change', updateState);
+  }, []);
+
+  return ratio;
+};

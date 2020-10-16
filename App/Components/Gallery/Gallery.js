@@ -1,7 +1,16 @@
 import React, {useState} from 'react';
-import {Modal, StyleSheet, TouchableOpacity, View} from 'react-native';
+import {
+  Modal,
+  StatusBar,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+
+import {useNavigation} from '@react-navigation/native';
 
 import GridList from './GridList';
+import GalleryNav from './GalleryNav';
 import HorizontalSlider from '../HorizontalSlider/HorizontalSlider';
 
 const DATA = [
@@ -48,8 +57,15 @@ const Gallery = ({images}) => {
   const [visible, setVisible] = useState(false);
   const [initialIndex, setInitialIndex] = useState(0);
 
+  const navigation = useNavigation();
+
   return (
     <View style={styles.container}>
+      <StatusBar barStyle={'dark-content'} />
+      <GalleryNav
+        onCameraPress={() => navigation.navigate('Camera')}
+        onLibraryPress={() => {}}
+      />
       <GridList
         data={DATA}
         indexCallback={(index) => {

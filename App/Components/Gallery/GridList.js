@@ -2,7 +2,6 @@ import React, {useState} from 'react';
 import {
   Dimensions,
   Image,
-  StatusBar,
   SafeAreaView,
   StyleSheet,
   TouchableOpacity,
@@ -39,7 +38,8 @@ const DATA = [
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: StatusBar.currentHeight || 0,
+    backgroundColor: '#f2f2f2',
+    paddingTop: 8,
   },
   item: {
     backgroundColor: '#454545',

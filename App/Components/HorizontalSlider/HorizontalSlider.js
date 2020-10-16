@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 
 import Indicator from './Indicator';
+import {useRatio} from '../../hooks';
 
 const {UIManager} = NativeModules;
 
@@ -27,11 +28,15 @@ const styles = StyleSheet.create({
   },
 });
 
-const Item = ({image, style}) => (
-  <View style={[styles.item, style]}>
-    <Image resizeMode="center" style={styles.photo} source={image} />
-  </View>
-);
+const Item = ({image, style}) => {
+  const ratio = useRatio();
+
+  return (
+    <View style={[styles.item, style]}>
+      <Image resizeMode="cover" style={[styles.photo, ratio]} source={image} />
+    </View>
+  );
+};
 
 const HorizontalSlider = ({
   data,
@@ -65,15 +70,8 @@ const HorizontalSlider = ({
     if (viewableItems.length > 0) {
       let currentIndex = viewableItems[0].index;
       setSelectedIndex(currentIndex);
-      // LayoutAnimation.spring();
+
       LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-      // LayoutAnimation.configureNext(
-      //   LayoutAnimation.create(
-      //     300,
-      //     LayoutAnimation.Types.easeIn,
-      //     LayoutAnimation.Properties.opacity,
-      //   ),
-      // );
 
       if (indexCallback) {
         indexCallback(currentIndex);
