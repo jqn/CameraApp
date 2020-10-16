@@ -13,12 +13,14 @@ const styles = StyleSheet.create({
     paddingBottom: getBottomSpace(),
     paddingHorizontal: 16,
     backgroundColor: '#3a3a3a',
+    zIndex: 200,
   },
   rowsContainer: {
     paddingLeft: 8,
     paddingRight: getStatusBarHeight(true),
     paddingVertical: 16,
     backgroundColor: '#3a3a3a',
+    zIndex: 200,
   },
   rows: {
     flexDirection: 'row',

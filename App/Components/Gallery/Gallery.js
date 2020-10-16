@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
   modalView: {
     backgroundColor: '#454545',
   },
-  presssble: {
+  pressable: {
     flex: 1,
   },
 });
@@ -77,7 +77,7 @@ const Gallery = ({images}) => {
         <View style={styles.centeredView}>
           <TouchableOpacity
             onPress={() => setVisible(false)}
-            style={styles.presssble}
+            style={styles.pressable}
           />
           <View style={styles.modalView}>
             <HorizontalSlider
@@ -88,7 +88,7 @@ const Gallery = ({images}) => {
           </View>
           <TouchableOpacity
             onPress={() => setVisible(false)}
-            style={styles.presssble}
+            style={styles.pressable}
           />
         </View>
       </Modal>

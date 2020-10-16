@@ -15,7 +15,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingHorizontal: 16,
     backgroundColor: '#3a3a3a',
-    zIndex: 120,
+    zIndex: 200,
     paddingTop: 32,
     paddingBottom: 4,
   },
@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
     paddingLeft: getStatusBarHeight(),
     paddingRight: 16,
     backgroundColor: '#3a3a3a',
-    zIndex: 120,
+    zIndex: 200,
   },
 });
 
