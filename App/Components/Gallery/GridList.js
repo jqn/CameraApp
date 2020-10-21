@@ -73,11 +73,13 @@ const formatData = (data) => {
   return [...data, ...formattedData];
 };
 
-const Item = ({src, onPress, style, index}) => (
-  <TouchableOpacity onPress={onPress} style={[styles.item, style]}>
-    <Image resizeMode="cover" style={styles.photo} source={src} />
-  </TouchableOpacity>
-);
+const Item = ({src, onPress, style, index}) => {
+  return (
+    <TouchableOpacity onPress={onPress} style={[styles.item, style]}>
+      <Image resizeMode="cover" style={styles.photo} source={{uri: src}} />
+    </TouchableOpacity>
+  );
+};
 
 const EmptyItem = () => <View style={[styles.item, styles.itemInvisible]} />;
 
@@ -98,7 +100,7 @@ const GridList = ({columns = 3, data = [], indexCallback}) => {
 
     return (
       <Item
-        src={item.src}
+        src={item.uri}
         style={backgroundColor}
         onPress={() => setIndex(item, index)}
         index={index}

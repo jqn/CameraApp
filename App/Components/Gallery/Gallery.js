@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {
   Modal,
   StatusBar,
@@ -12,6 +12,8 @@ import {useNavigation} from '@react-navigation/native';
 import GridList from './GridList';
 import GalleryNav from './GalleryNav';
 import HorizontalSlider from '../HorizontalSlider/HorizontalSlider';
+
+import {PhotosContext} from '../../Utils/PhotosManager';
 
 const DATA = [
   {
@@ -59,6 +61,8 @@ const Gallery = ({images}) => {
 
   const navigation = useNavigation();
 
+  const {photos} = useContext(PhotosContext);
+
   return (
     <View style={styles.container}>
       <StatusBar barStyle={'dark-content'} />
@@ -67,7 +71,7 @@ const Gallery = ({images}) => {
         onLibraryPress={() => {}}
       />
       <GridList
-        data={DATA}
+        data={photos}
         indexCallback={(index) => {
           setInitialIndex(index);
           setVisible(true);
@@ -81,7 +85,7 @@ const Gallery = ({images}) => {
           />
           <View style={styles.modalView}>
             <HorizontalSlider
-              data={DATA}
+              data={photos}
               indexCallback={(index) => console.log('Index', index)}
               initialIndex={initialIndex}
             />

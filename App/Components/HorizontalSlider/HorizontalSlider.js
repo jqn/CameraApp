@@ -28,12 +28,16 @@ const styles = StyleSheet.create({
   },
 });
 
-const Item = ({image, style}) => {
+const Item = ({src, style}) => {
   const ratio = useRatio();
 
   return (
     <View style={[styles.item, style]}>
-      <Image resizeMode="cover" style={[styles.photo, ratio]} source={image} />
+      <Image
+        resizeMode="cover"
+        style={[styles.photo, ratio]}
+        source={{uri: src}}
+      />
     </View>
   );
 };
@@ -89,7 +93,7 @@ const HorizontalSlider = ({
 
     return (
       <Item
-        image={item.src}
+        src={item.uri}
         onPress={() => setIndex(item)}
         style={{backgroundColor}}
       />

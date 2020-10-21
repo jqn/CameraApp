@@ -1,4 +1,4 @@
-import React, {useRef, useState} from 'react';
+import React, {useContext, useRef, useState, useEffect} from 'react';
 import {StyleSheet, View} from 'react-native';
 
 import {RNCamera} from 'react-native-camera';
@@ -10,6 +10,7 @@ import ControlPanel from './ControlPanel';
 import Grid from '../Grid/Grid';
 
 import {useDeviceOrientation} from '../../hooks';
+import {PhotosContext} from '../../Utils/PhotosManager';
 
 const styles = StyleSheet.create({
   rows: {
@@ -60,6 +61,17 @@ const Camera = ({children}) => {
   const [sliders, setSliders] = useState(false);
   const [thumbnail, setThumbnail] = useState(null);
   const [cameraZoom, setCameraZoom] = useState(0);
+
+  const {addPhoto, removePhotos, photos} = useContext(PhotosContext);
+
+  useEffect(() => {
+    if (photos.length !== 0) {
+      let thumbnailPhoto = photos.slice(-1);
+      setThumbnail(thumbnailPhoto[0].uri);
+    } else {
+      setThumbnail(null);
+    }
+  }, [photos]);
 
   const toggleCameraType = () => {
     if (type === 'back') {
@@ -127,7 +139,8 @@ const Camera = ({children}) => {
     if (cameraRef) {
       const options = {quality: 0.5};
       const data = await cameraRef.current.takePictureAsync(options);
-      setThumbnail(data.uri);
+      addPhoto({id: `${Date.now()}`, uri: data.uri});
+      // removePhotos();
     }
   };
 

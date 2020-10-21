@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {Linking, Platform} from 'react-native';
 
 import AsyncStorage from '@react-native-community/async-storage';
@@ -13,10 +13,10 @@ const PERSISTENCE_KEY = 'NAVIGATION_STATE';
 const Stack = createStackNavigator();
 
 const NavigationStack = () => {
-  const [isReady, setIsReady] = React.useState(false);
-  const [initialState, setInitialState] = React.useState();
+  const [isReady, setIsReady] = useState(false);
+  const [initialState, setInitialState] = useState();
 
-  React.useEffect(() => {
+  useEffect(() => {
     const restoreState = async () => {
       try {
         const initialUrl = await Linking.getInitialURL();

@@ -72,8 +72,10 @@ const Controls = ({
           : styles.rowsContainer
       }>
       <View style={orientation === 'PORTRAIT' ? styles.rows : styles.columns}>
-        <View
-          style={orientation === 'PORTRAIT' ? styles.section : styles.stack}>
+        <TouchableOpacity
+          style={orientation === 'PORTRAIT' ? styles.section : styles.stack}
+          onPress={onThumbPress}
+          activeOpacity={0.5}>
           {thumbnail === null ? (
             <Fontisto
               name="photograph"
@@ -82,7 +84,6 @@ const Controls = ({
               style={
                 orientation === 'PORTRAIT' ? styles.leftIcon : styles.centerIcon
               }
-              onPress={onThumbPress}
             />
           ) : (
             <Image
@@ -95,7 +96,7 @@ const Controls = ({
               source={{uri: thumbnail}}
             />
           )}
-        </View>
+        </TouchableOpacity>
         <TouchableOpacity
           style={orientation === 'PORTRAIT' ? styles.section : styles.stack}
           onPress={onCapturePress}
