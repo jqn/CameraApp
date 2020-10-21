@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
   },
   menu: {
     paddingHorizontal: 16,
-    marginTop: StatusBar.currentHeight || 16,
+    marginTop: StatusBar.currentHeight || 8,
     paddingTop: 32,
     flexDirection: 'row',
     justifyContent: 'space-between',
