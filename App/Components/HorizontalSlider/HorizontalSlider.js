@@ -34,7 +34,8 @@ const Item = ({src, style}) => {
   return (
     <View style={[styles.item, style]}>
       <Image
-        resizeMode="cover"
+        // resizeMode="cover"
+        resizeMode="contain"
         style={[styles.photo, ratio]}
         source={{uri: src}}
       />

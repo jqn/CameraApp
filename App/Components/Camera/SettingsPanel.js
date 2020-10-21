@@ -22,9 +22,10 @@ const styles = StyleSheet.create({
   columnsContainer: {
     flexDirection: 'column',
     justifyContent: 'space-between',
+    alignItems: 'center',
     paddingVertical: 16,
-    paddingLeft: getStatusBarHeight(true) || 8,
-    paddingRight: 16,
+    paddingLeft: getStatusBarHeight(true) || 0,
+    paddingRight: 8,
     backgroundColor: '#3a3a3a',
     zIndex: 200,
   },

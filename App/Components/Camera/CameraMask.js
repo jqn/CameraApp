@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {Dimensions, View, StyleSheet} from 'react-native';
+import SettingsPanel from './SettingsPanel';
 
 const CameraMask = ({outerMaskOpacity, backgroundColor, children}) => {
   const [deviceOrientation, setDeviceOrientation] = useState(null);
@@ -49,8 +50,9 @@ const CameraMask = ({outerMaskOpacity, backgroundColor, children}) => {
                 opacity: outerMaskOpacity,
               },
               deviceOrientation === 'landscape'
-                ? styles.sectionView
+                ? styles.leftSection
                 : styles.collapsedView,
+              {},
             ]}
           />
           <View
@@ -67,7 +69,7 @@ const CameraMask = ({outerMaskOpacity, backgroundColor, children}) => {
                 opacity: outerMaskOpacity,
               },
               deviceOrientation === 'landscape'
-                ? styles.sectionView
+                ? styles.rightSection
                 : styles.collapsedView,
             ]}
           />
@@ -122,8 +124,13 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
   },
-  sectionView: {
-    flex: 1,
+  leftSection: {
+    justifyContent: 'center',
+    flex: 0.8,
+  },
+  rightSection: {
+    justifyContent: 'center',
+    flex: 1.2,
   },
   collapsedView: {
     flex: 0,
@@ -134,7 +141,7 @@ CameraMask.defaultProps = {
   outerMaskOpacity: 0.69,
   finderWidth: 280,
   finderHeight: 230,
-  backgroundColor: 'rgb(0, 0, 0)',
+  backgroundColor: '#000',
 };
 
 export default CameraMask;

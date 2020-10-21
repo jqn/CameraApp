@@ -1,5 +1,5 @@
-import React, {useEffect, useState} from 'react';
-import {Image, StyleSheet} from 'react-native';
+import React, {forwardRef, useEffect, useState} from 'react';
+import {Image, View, StyleSheet} from 'react-native';
 
 import {Images} from '../../Themes';
 
@@ -10,7 +10,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const Grid = ({source = 'large'}) => {
+const Grid = forwardRef(({children, source = 'large'}, ref) => {
   const [gridSource, setGridSource] = useState(Images.largeGrid);
 
   useEffect(() => {
@@ -24,10 +24,17 @@ const Grid = ({source = 'large'}) => {
   }, [source]);
 
   if (source !== null) {
-    return <Image source={gridSource} style={styles.grid} resizeMode="cover" />;
+    return (
+      <Image
+        ref={ref}
+        source={gridSource}
+        style={styles.grid}
+        resizeMode="cover"
+      />
+    );
   } else {
     return null;
   }
-};
+});
 
 export default Grid;

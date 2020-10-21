@@ -29,3 +29,5 @@ https://blog.logrocket.com/use-hooks-and-context-not-react-and-redux/
 https://github.com/tutsplus/practical-animation-examples-in-react-native/blob/master/src/pages/ExpandPage.js
 
 https://github.com/nathvarun/professional-animations-in-react-native/blob/master/02-uber-login-screen/part-2/App.js
+
+https://stackoverflow.com/questions/30096038/react-native-getting-the-position-of-an-element

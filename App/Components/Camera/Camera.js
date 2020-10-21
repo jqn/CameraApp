@@ -1,8 +1,9 @@
 import React, {useContext, useRef, useState, useEffect} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {StyleSheet, View, UIManager, findNodeHandle} from 'react-native';
 
 import {RNCamera} from 'react-native-camera';
 import {useNavigation} from '@react-navigation/native';
+import ImageEditor from '@react-native-community/image-editor';
 
 import SettingsPanel from './SettingsPanel';
 import CameraMask from './CameraMask';
@@ -11,6 +12,9 @@ import Grid from '../Grid/Grid';
 
 import {useDeviceOrientation} from '../../hooks';
 import {PhotosContext} from '../../Utils/PhotosManager';
+
+const DEFAULT_IMAGE_HEIGHT = 768;
+const DEFAULT_IMAGE_WIDTH = 1024;
 
 const styles = StyleSheet.create({
   rows: {
@@ -63,6 +67,8 @@ const Camera = ({children}) => {
   const [cameraZoom, setCameraZoom] = useState(0);
 
   const {addPhoto, removePhotos, photos} = useContext(PhotosContext);
+
+  const ref = React.useRef();
 
   useEffect(() => {
     if (photos.length !== 0) {
@@ -137,10 +143,38 @@ const Camera = ({children}) => {
 
   const takePicture = async () => {
     if (cameraRef) {
-      const options = {quality: 0.5};
+      const options = {quality: 0.5, width: 1024};
       const data = await cameraRef.current.takePictureAsync(options);
-      addPhoto({id: `${Date.now()}`, uri: data.uri});
-      // removePhotos();
+      let cropData = {
+        offset: {x: 0, y: 0},
+        size: {width: data.width, height: data.height},
+        displaySize: {
+          width: DEFAULT_IMAGE_WIDTH,
+          height: DEFAULT_IMAGE_HEIGHT,
+        },
+        resizeMode: 'cover',
+      };
+      measure();
+      // TO DO - fine tune cropping
+      let croppedImage = await ImageEditor.cropImage(data.uri, cropData);
+      addPhoto({id: `${Date.now()}`, uri: croppedImage});
+      // addPhoto({id: `${Date.now()}`, uri: data.uri});
+    }
+  };
+
+  const measure = () => {
+    if (ref.current) {
+      ref.current.measure((fx, fy, width, height, px, py) => {
+        const location = {
+          fx: fx,
+          fy: fy,
+          width: width,
+          height: height,
+          px: px,
+          py: py,
+        };
+        console.log(location);
+      });
     }
   };
 
@@ -165,16 +199,33 @@ const Camera = ({children}) => {
           gridIcon={gridIcons[grid]}
         />
         <CameraMask>
-          <Grid source={grid} />
+          <Grid
+            source={grid}
+            ref={ref}
+            // ref={(gridref) => {
+            //   this._grid = gridref;
+            // }}
+          />
         </CameraMask>
         <ControlPanel
           onCapturePress={takePicture}
-          onCameraSwitchPress={toggleCameraType}
+          // onCameraSwitchPress={toggleCameraType}
+          onCameraSwitchPress={() => removePhotos()}
           onThumbPress={() => navigation.navigate('Gallery')}
           showSlider={sliders}
           thumbnail={thumbnail}
         />
       </RNCamera>
+      <View
+        style={{
+          width: 8,
+          height: 8,
+          backgroundColor: 'red',
+          position: 'absolute',
+          bottom: 293,
+          left: 0,
+        }}
+      />
     </View>
   );
 };
