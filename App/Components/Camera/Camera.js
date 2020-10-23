@@ -11,11 +11,16 @@ import ControlPanel from './ControlPanel';
 import Grid from '../Grid/Grid';
 
 import {useDeviceOrientation} from '../../hooks';
+import withCameraZoom from '../../HOCs/withCameraZoom';
+
 import {PhotosContext} from '../../Utils/PhotosManager';
 import {CameraContext} from '../../Utils/CameraManager';
 
+const ViewWithZoom = withCameraZoom(View);
+
 const DEFAULT_IMAGE_HEIGHT = 768;
 const DEFAULT_IMAGE_WIDTH = 1024;
+const ZOOM_F = 0.1;
 
 const styles = StyleSheet.create({
   rows: {
@@ -71,6 +76,7 @@ const Camera = ({children}) => {
   const {exposure} = useContext(CameraContext);
 
   const ref = React.useRef();
+  let prevPinch = 1;
 
   useEffect(() => {
     if (photos.length !== 0) {
@@ -136,11 +142,11 @@ const Camera = ({children}) => {
   };
 
   const zoomIn = () => {
-    setCameraZoom(cameraZoom + 0.01 > 1 ? 1 : cameraZoom + 0.04);
+    // setCameraZoom(cameraZoom + 0.01 > 1 ? 1 : cameraZoom + 0.04);
   };
 
   const zoomOut = () => {
-    setCameraZoom(cameraZoom - 0.1 < 0 ? 0 : cameraZoom - 0.1);
+    // setCameraZoom(cameraZoom - 0.1 < 0 ? 0 : cameraZoom - 0.1);
   };
 
   const takePicture = async () => {
@@ -179,8 +185,47 @@ const Camera = ({children}) => {
     }
   };
 
+  const onPinchStart = () => {
+    prevPinch = 1;
+  };
+
+  const onPinchEnd = () => {
+    prevPinch = 1;
+  };
+
+  const onPinchProgress = (p) => {
+    console.log('onPinchProgress -> p', p);
+    let p2 = p - prevPinch;
+    if (p2 > 0 && p2 > ZOOM_F) {
+      prevPinch = p;
+      // this.setState({zoom: Math.min(this.state.zoom + ZOOM_F, 1)});
+      setCameraZoom(Math.min(cameraZoom + ZOOM_F, 1));
+      console.log(
+        'onPinchProgress round -> p',
+        Math.min(cameraZoom + ZOOM_F, 1),
+      );
+    } else if (p2 < 0 && p2 < -ZOOM_F) {
+      prevPinch = p;
+      // this.setState({zoom: Math.max(this.state.zoom - ZOOM_F, 0)});
+      setCameraZoom(Math.max(cameraZoom - ZOOM_F, 0));
+    }
+  };
+
+  const onSingleTap = (event) => {
+    // this.setState({
+    //   focusX: event.nativeEvent.y / this.state.cameraHeight,
+    //   focusY: event.nativeEvent.x / this.state.cameraWidth,
+    //   slidersVisible: !this.state.slidersVisible,
+    // });
+  };
+
   return (
-    <View style={styles.container}>
+    <ViewWithZoom
+      style={styles.container}
+      onPinchEnd={onPinchEnd}
+      onPinchStart={onPinchStart}
+      onPinchProgress={onPinchProgress}
+      onSingleTap={onSingleTap}>
       <RNCamera
         ref={cameraRef}
         style={deviceOrientation === 'PORTRAIT' ? styles.columns : styles.rows}
@@ -222,7 +267,7 @@ const Camera = ({children}) => {
           left: 0,
         }}
       /> */}
-    </View>
+    </ViewWithZoom>
   );
 };
 

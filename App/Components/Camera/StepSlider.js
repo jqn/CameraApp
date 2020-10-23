@@ -92,10 +92,11 @@ const StepSlider = ({LRpadding, min, max, single}) => {
   });
 
   const SliderValueChange = (values) => {
-    console.log('multiSliderValuesChange -> values', values);
     if (values >= 0) {
       setValue(values[0] / 10);
       setCameraExposure(values[0] * 0.1);
+      // console.log('SliderValueChange -> values', Math.round(values[0] * 0.1));
+      // var discount = Math.round((100 - (price / listprice) * 100) * 100) / 100;
     } else {
       setValue(values[0]);
       setCameraExposure(-1);
