@@ -1,5 +1,5 @@
 import React, {useContext, useRef, useState, useEffect} from 'react';
-import {StyleSheet, View, UIManager, findNodeHandle} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 
 import {RNCamera} from 'react-native-camera';
 import {useNavigation} from '@react-navigation/native';
@@ -12,6 +12,7 @@ import Grid from '../Grid/Grid';
 
 import {useDeviceOrientation} from '../../hooks';
 import {PhotosContext} from '../../Utils/PhotosManager';
+import {CameraContext} from '../../Utils/CameraManager';
 
 const DEFAULT_IMAGE_HEIGHT = 768;
 const DEFAULT_IMAGE_WIDTH = 1024;
@@ -67,6 +68,7 @@ const Camera = ({children}) => {
   const [cameraZoom, setCameraZoom] = useState(0);
 
   const {addPhoto, removePhotos, photos} = useContext(PhotosContext);
+  const {exposure} = useContext(CameraContext);
 
   const ref = React.useRef();
 
@@ -158,7 +160,6 @@ const Camera = ({children}) => {
       // TO DO - fine tune cropping
       let croppedImage = await ImageEditor.cropImage(data.uri, cropData);
       addPhoto({id: `${Date.now()}`, uri: croppedImage});
-      // addPhoto({id: `${Date.now()}`, uri: data.uri});
     }
   };
 
@@ -188,7 +189,8 @@ const Camera = ({children}) => {
         flashMode={flash}
         whiteBalance={whiteBalance}
         zoom={cameraZoom}
-        maxZoom={8}>
+        maxZoom={8}
+        exposure={exposure}>
         <SettingsPanel
           onFlashPress={toggleFlash}
           onSlidersPress={toggleSliders}
@@ -199,13 +201,7 @@ const Camera = ({children}) => {
           gridIcon={gridIcons[grid]}
         />
         <CameraMask>
-          <Grid
-            source={grid}
-            ref={ref}
-            // ref={(gridref) => {
-            //   this._grid = gridref;
-            // }}
-          />
+          <Grid source={grid} ref={ref} />
         </CameraMask>
         <ControlPanel
           onCapturePress={takePicture}
@@ -216,7 +212,7 @@ const Camera = ({children}) => {
           thumbnail={thumbnail}
         />
       </RNCamera>
-      <View
+      {/* <View
         style={{
           width: 8,
           height: 8,
@@ -225,7 +221,7 @@ const Camera = ({children}) => {
           bottom: 293,
           left: 0,
         }}
-      />
+      /> */}
     </View>
   );
 };

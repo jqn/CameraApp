@@ -9,7 +9,9 @@ export const PhotosContextProvider = ({children}) => {
   const addPhoto = (photo) => {
     setPhotos([...photos, photo]);
   };
+
   const removePhoto = (photo) => setPhotos(photos, ...photo);
+
   const removePhotos = async () => {
     await AsyncStorage.removeItem('PHOTO_APP::PHOTO_LIST');
     setPhotos([]);
@@ -31,7 +33,6 @@ export const PhotosContextProvider = ({children}) => {
 
   return (
     <PhotosContext.Provider
-      Provider
       value={{photos, addPhoto, removePhoto, removePhotos}}>
       {children}
     </PhotosContext.Provider>

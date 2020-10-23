@@ -1,6 +1,8 @@
-import React, {useState, useEffect} from 'react';
+import React, {useContext, useState, useEffect} from 'react';
 import {Image, StyleSheet, Text, View, Dimensions} from 'react-native';
 import MultiSlider from '@ptomasroos/react-native-multi-slider';
+
+import {CameraContext} from '../../Utils/CameraManager';
 
 const window = Dimensions.get('window');
 
@@ -72,6 +74,10 @@ const StepSlider = ({LRpadding, min, max, single}) => {
   const [second, setSecond] = useState(10);
   const [value, setValue] = React.useState([0]);
 
+  const {exposure, setCameraExposure, enableAutoExposure} = useContext(
+    CameraContext,
+  );
+
   const [dimensions, setDimensions] = useState({window});
 
   const onChange = ({windowDimensions}) => {
@@ -85,18 +91,15 @@ const StepSlider = ({LRpadding, min, max, single}) => {
     };
   });
 
-  const multiSliderValuesChange = (values) => {
+  const SliderValueChange = (values) => {
+    console.log('multiSliderValuesChange -> values', values);
     if (values >= 0) {
       setValue(values[0] / 10);
+      setCameraExposure(values[0] * 0.1);
     } else {
       setValue(values[0]);
+      setCameraExposure(-1);
     }
-    // if (single) {
-    //   setSecond(1);
-    // } else {
-    //   setFirst(0);
-    //   setSecond(2);
-    // }
   };
 
   const renderScale = () => {
@@ -117,19 +120,6 @@ const StepSlider = ({LRpadding, min, max, single}) => {
         {renderScale()}
       </View>
       <View style={styles.sliderContainer}>
-        {/* <MultiSlider
-          trackStyle={{backgroundColor: '#bdc3c7'}}
-          selectedStyle={{backgroundColor: '#5e5e5e'}}
-          values={[0]}
-          sliderLength={Dimensions.get('window').width - LRpadding * 2}
-          onValuesChange={multiSliderValuesChange}
-          min={min}
-          max={max}
-          step={1}
-          allowOverlap={false}
-          customMarker={Marker}
-          snapped={true}
-        /> */}
         <MultiSlider
           values={[-1]}
           enableLabel
@@ -138,9 +128,7 @@ const StepSlider = ({LRpadding, min, max, single}) => {
           max={10}
           step={1}
           snapped
-          onValuesChange={multiSliderValuesChange}
-          // sliderLength={dimensions.window.width - 72}
-          // sliderLength={382}
+          onValuesChange={SliderValueChange}
           sliderLength={Dimensions.get('window').width - LRpadding * 2}
           containerStyle={{
             height: 30,
@@ -150,18 +138,6 @@ const StepSlider = ({LRpadding, min, max, single}) => {
           }}
         />
         <Text style={styles.label}>Exposure</Text>
-        {/* <Slider
-          style={{
-            width: Dimensions.get('window').width - LRpadding * 2,
-            height: 40,
-          }}
-          minimumValue={0}
-          maximumValue={10}
-          minimumTrackTintColor="#FFFFFF"
-          maximumTrackTintColor="#000000"
-          step={1}
-          thumbImage={require('../../Images/exposure-icon.png')}
-        /> */}
       </View>
     </View>
   );

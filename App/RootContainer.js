@@ -4,13 +4,16 @@
 import React, {Component} from 'react';
 import NavigationStack from './Navigation/AppNavigation';
 
-import {PhotosContext, PhotosContextProvider} from './Utils/PhotosManager';
+import {PhotosContextProvider} from './Utils/PhotosManager';
+import {CameraContextProvider} from './Utils/CameraManager';
 
 class RootContainer extends Component {
   render() {
     return (
       <PhotosContextProvider>
-        <NavigationStack />
+        <CameraContextProvider>
+          <NavigationStack />
+        </CameraContextProvider>
       </PhotosContextProvider>
     );
   }
