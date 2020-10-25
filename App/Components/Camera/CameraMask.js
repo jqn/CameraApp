@@ -1,6 +1,5 @@
 import React, {useState, useEffect} from 'react';
 import {Dimensions, View, StyleSheet} from 'react-native';
-import SettingsPanel from './SettingsPanel';
 
 const CameraMask = ({outerMaskOpacity, backgroundColor, children}) => {
   const [deviceOrientation, setDeviceOrientation] = useState(null);
@@ -26,7 +25,7 @@ const CameraMask = ({outerMaskOpacity, backgroundColor, children}) => {
   }, []);
 
   return (
-    <View style={[styles.container]}>
+    <View style={[styles.container]} pointerEvents="box-none">
       <View
         style={[styles.finder, {width: ratio.width, height: ratio.height}]}
       />

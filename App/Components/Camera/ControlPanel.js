@@ -41,6 +41,7 @@ const ControlPanel = ({
 
   return (
     <View
+      pointerEvents="box-none"
       style={
         deviceOrientation === 'PORTRAIT'
           ? styles.columnsContainer

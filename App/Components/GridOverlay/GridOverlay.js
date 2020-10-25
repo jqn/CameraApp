@@ -1,5 +1,5 @@
 import React, {forwardRef, useEffect, useState} from 'react';
-import {Image, View, StyleSheet} from 'react-native';
+import {Image, StyleSheet} from 'react-native';
 
 import {Images} from '../../Themes';
 

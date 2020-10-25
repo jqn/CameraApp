@@ -8,9 +8,9 @@ import ImageEditor from '@react-native-community/image-editor';
 import SettingsPanel from './SettingsPanel';
 import CameraMask from './CameraMask';
 import ControlPanel from './ControlPanel';
-import Grid from '../Grid/Grid';
+import GridOverlay from '../GridOverlay/GridOverlay';
 
-import {useDeviceOrientation} from '../../hooks';
+import {useDeviceOrientation, useScreenDimensions} from '../../hooks';
 import withCameraZoom from '../../HOCs/withCameraZoom';
 
 import {PhotosContext} from '../../Utils/PhotosManager';
@@ -60,6 +60,7 @@ const gridIcons = {
 
 const Camera = ({children}) => {
   const deviceOrientation = useDeviceOrientation();
+  const screenData = useScreenDimensions();
   const navigation = useNavigation();
 
   const cameraRef = useRef(null);
@@ -72,8 +73,11 @@ const Camera = ({children}) => {
   const [thumbnail, setThumbnail] = useState(null);
   const [cameraZoom, setCameraZoom] = useState(0);
 
-  const {addPhoto, removePhotos, photos} = useContext(PhotosContext);
-  const {exposure} = useContext(CameraContext);
+  const {photos, focusPoint, addPhoto, removePhotos} = useContext(
+    PhotosContext,
+  );
+
+  const {exposure, switchFocusPoint} = useContext(CameraContext);
 
   const ref = React.useRef();
   let prevPinch = 1;
@@ -86,6 +90,22 @@ const Camera = ({children}) => {
       setThumbnail(null);
     }
   }, [photos]);
+
+  const measure = () => {
+    if (ref.current) {
+      ref.current.measure((fx, fy, width, height, px, py) => {
+        const location = {
+          fx: fx,
+          fy: fy,
+          width: width,
+          height: height,
+          px: px,
+          py: py,
+        };
+        console.log(location);
+      });
+    }
+  };
 
   const toggleCameraType = () => {
     if (type === 'back') {
@@ -169,22 +189,6 @@ const Camera = ({children}) => {
     }
   };
 
-  const measure = () => {
-    if (ref.current) {
-      ref.current.measure((fx, fy, width, height, px, py) => {
-        const location = {
-          fx: fx,
-          fy: fy,
-          width: width,
-          height: height,
-          px: px,
-          py: py,
-        };
-        console.log(location);
-      });
-    }
-  };
-
   const onPinchStart = () => {
     prevPinch = 1;
   };
@@ -198,7 +202,6 @@ const Camera = ({children}) => {
     let p2 = p - prevPinch;
     if (p2 > 0 && p2 > ZOOM_F) {
       prevPinch = p;
-      // this.setState({zoom: Math.min(this.state.zoom + ZOOM_F, 1)});
       setCameraZoom(Math.min(cameraZoom + ZOOM_F, 1));
       console.log(
         'onPinchProgress round -> p',
@@ -206,26 +209,21 @@ const Camera = ({children}) => {
       );
     } else if (p2 < 0 && p2 < -ZOOM_F) {
       prevPinch = p;
-      // this.setState({zoom: Math.max(this.state.zoom - ZOOM_F, 0)});
       setCameraZoom(Math.max(cameraZoom - ZOOM_F, 0));
     }
   };
 
   const onSingleTap = (event) => {
-    // this.setState({
-    //   focusX: event.nativeEvent.y / this.state.cameraHeight,
-    //   focusY: event.nativeEvent.x / this.state.cameraWidth,
-    //   slidersVisible: !this.state.slidersVisible,
-    // });
+    console.log(screenData);
+    // measure();
+    switchFocusPoint({
+      x: event.nativeEvent.y / screenData.height,
+      y: event.nativeEvent.x / screenData.width,
+    });
   };
 
   return (
-    <ViewWithZoom
-      style={styles.container}
-      onPinchEnd={onPinchEnd}
-      onPinchStart={onPinchStart}
-      onPinchProgress={onPinchProgress}
-      onSingleTap={onSingleTap}>
+    <View style={styles.container}>
       <RNCamera
         ref={cameraRef}
         style={deviceOrientation === 'PORTRAIT' ? styles.columns : styles.rows}
@@ -235,7 +233,8 @@ const Camera = ({children}) => {
         whiteBalance={whiteBalance}
         zoom={cameraZoom}
         maxZoom={8}
-        exposure={exposure}>
+        exposure={exposure}
+        autoFocusPointOfInterest={focusPoint}>
         <SettingsPanel
           onFlashPress={toggleFlash}
           onSlidersPress={toggleSliders}
@@ -246,12 +245,19 @@ const Camera = ({children}) => {
           gridIcon={gridIcons[grid]}
         />
         <CameraMask>
-          <Grid source={grid} ref={ref} />
+          <ViewWithZoom
+            style={styles.container}
+            onPinchEnd={onPinchEnd}
+            onPinchStart={onPinchStart}
+            onPinchProgress={onPinchProgress}
+            onSingleTap={onSingleTap}>
+            <GridOverlay source={grid} ref={ref} />
+          </ViewWithZoom>
         </CameraMask>
         <ControlPanel
           onCapturePress={takePicture}
-          // onCameraSwitchPress={toggleCameraType}
-          onCameraSwitchPress={() => removePhotos()}
+          onCameraSwitchPress={toggleCameraType}
+          // onCameraSwitchPress={() => removePhotos()}
           onThumbPress={() => navigation.navigate('Gallery')}
           showSlider={sliders}
           thumbnail={thumbnail}
@@ -267,7 +273,7 @@ const Camera = ({children}) => {
           left: 0,
         }}
       /> */}
-    </ViewWithZoom>
+    </View>
   );
 };
 

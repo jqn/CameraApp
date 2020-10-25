@@ -19,6 +19,16 @@ A cross platform (iOS and Android) React Native Camera app.
 - `cd CameraApp`
 - `npx react-native run-ios` or `npx react-native run-android`
 
+### Features
+
+- Hooks
+- HOCs
+- Context
+- Camera access
+- Camera roll access
+- Gallery
+- Gallery Image Slider
+
 ---
 
 This project was put together to serve as an example to help you in building your own React Native apps. Feel free to download it and tinker with it!

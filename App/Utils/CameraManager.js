@@ -4,6 +4,7 @@ export const CameraContext = createContext(-1);
 
 export const CameraContextProvider = ({children}) => {
   const [exposure, setExposure] = useState(-1);
+  const [focusPoint, setFocusPoint] = useState({x: 0.5, y: 0.5});
 
   const setCameraExposure = (value) => {
     setExposure(value);
@@ -13,9 +14,20 @@ export const CameraContextProvider = ({children}) => {
     setExposure(-1);
   };
 
+  const switchFocusPoint = (points) => {
+    console.log('switchFocusPoint -> point', points);
+    setFocusPoint(points);
+  };
+
   return (
     <CameraContext.Provider
-      value={{exposure, setCameraExposure, enableAutoExposure}}>
+      value={{
+        exposure,
+        focusPoint,
+        setCameraExposure,
+        enableAutoExposure,
+        switchFocusPoint,
+      }}>
       {children}
     </CameraContext.Provider>
   );
