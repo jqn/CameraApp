@@ -12,29 +12,6 @@ import {
 const numColumns = 3;
 const numMargins = 2;
 
-const DATA = [
-  {
-    id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-    title: 'First Item',
-    src: require('../../Images/mountains.jpg'),
-  },
-  {
-    id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-    title: 'Second Item',
-    src: require('../../Images/flower-plant.jpg'),
-  },
-  {
-    id: '58694a0f-3da1-471f-bd96-145571e29d72',
-    title: 'Third Item',
-    src: require('../../Images/leaf.jpg'),
-  },
-  {
-    id: '58694a0f-3da1-471f-bd96-145571e29d74',
-    title: 'Fourth Item',
-    src: require('../../Images/medusa.jpg'),
-  },
-];
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -58,6 +35,7 @@ const styles = StyleSheet.create({
 });
 
 const formatData = (data) => {
+  console.log('formatData -> data', data);
   const formattedData = [];
   const numberOfFullRows = Math.floor(data.length / numColumns);
 

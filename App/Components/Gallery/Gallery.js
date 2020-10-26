@@ -33,13 +33,14 @@ const styles = StyleSheet.create({
   },
 });
 
-const Gallery = ({images}) => {
+const Gallery = () => {
   const [visible, setVisible] = useState(false);
   const [initialIndex, setInitialIndex] = useState(0);
+  const [imageList, setImageList] = useState([]);
 
   const navigation = useNavigation();
 
-  const {photos} = useContext(PhotosContext);
+  // const {photos} = useContext(PhotosContext);
 
   useEffect(() => {
     const fetchPhotos = async () => {
@@ -49,8 +50,16 @@ const Gallery = ({images}) => {
         groupName: 'CameraApp',
         assetType: 'Photos',
       };
-      let photosAlbum = await CameraRoll.getPhotos(fetchParams);
-      console.log('fetchPhotos -> photosAlbum', photosAlbum);
+      let album = await CameraRoll.getPhotos(fetchParams);
+      console.log('fetchPhotos -> photosAlbum', album);
+
+      let photosList = album.edges.map((item) => {
+        console.log('fetchPhotos -> item', item);
+        return {id: `${Date.now()}`, uri: item.node.image.uri};
+      });
+      console.log('fetchPhotos -> photosList', photosList);
+      setImageList(photosList);
+      console.log('waiting');
     };
     fetchPhotos();
   }, []);
@@ -63,27 +72,34 @@ const Gallery = ({images}) => {
         onLibraryPress={() => {}}
       />
       <GridList
-        data={photos}
+        data={imageList}
         indexCallback={(index) => {
           setInitialIndex(index);
           setVisible(true);
+          StatusBar.setBarStyle('light-content');
         }}
       />
       <Modal animationType="fade" transparent={true} visible={visible}>
         <View style={styles.centeredView}>
           <TouchableOpacity
-            onPress={() => setVisible(false)}
+            onPress={() => {
+              setVisible(false);
+              StatusBar.setBarStyle('dark-content');
+            }}
             style={styles.pressable}
           />
           <View style={styles.modalView}>
             <HorizontalSlider
-              data={photos}
+              data={imageList}
               indexCallback={(index) => console.log('Index', index)}
               initialIndex={initialIndex}
             />
           </View>
           <TouchableOpacity
-            onPress={() => setVisible(false)}
+            onPress={() => {
+              setVisible(false);
+              StatusBar.setBarStyle('dark-content');
+            }}
             style={styles.pressable}
           />
         </View>

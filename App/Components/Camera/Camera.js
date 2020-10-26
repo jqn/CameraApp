@@ -212,25 +212,13 @@ const Camera = ({children}) => {
       // TO DO - fine tune cropping
       let croppedImage = await ImageEditor.cropImage(data.uri, cropData);
       console.log('takePicture -> croppedImage', croppedImage);
-      CameraRoll.save(croppedImage, {
+      let savedPhoto = await CameraRoll.save(croppedImage, {
         type: 'photo',
         album: 'CameraApp',
         groupTypes: 'Album',
       });
-      addPhoto({id: `${Date.now()}`, uri: croppedImage});
+      addPhoto({id: `${Date.now()}`, uri: savedPhoto});
     }
-  };
-
-  const openLibrary = async () => {
-    let fetchParams = {
-      first: 20,
-      groupTypes: 'Album',
-      groupName: 'CameraApp',
-      assetType: 'Photos',
-    };
-    console.log('get photos');
-    let photosAlbum = await CameraRoll.getPhotos(fetchParams);
-    console.log('openLibrary -> albums', photosAlbum);
   };
 
   return (
@@ -254,7 +242,7 @@ const Camera = ({children}) => {
           flashIcon={flashIcons[flash]}
           whiteBalanceIcon={whiteBalanceIcons[whiteBalance]}
           gridIcon={gridIcons[grid]}
-          onLibraryPress={openLibrary}
+          onLibraryPress={() => navigation.navigate('Gallery')}
         />
         <CameraMask>
           <ViewWithZoom
@@ -269,8 +257,7 @@ const Camera = ({children}) => {
         <ControlPanel
           onCapturePress={takePicture}
           onCameraSwitchPress={toggleCameraType}
-          // onCameraSwitchPress={() => removePhotos()}
-          onThumbPress={() => navigation.navigate('Gallery')}
+          onThumbPress={() => removePhotos()}
           showSlider={sliders}
           thumbnail={thumbnail}
         />
