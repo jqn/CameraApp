@@ -4,6 +4,7 @@ import {StyleSheet, View} from 'react-native';
 import {RNCamera} from 'react-native-camera';
 import {useNavigation} from '@react-navigation/native';
 import ImageEditor from '@react-native-community/image-editor';
+import CameraRoll from '@react-native-community/cameraroll';
 
 import SettingsPanel from './SettingsPanel';
 import CameraMask from './CameraMask';
@@ -161,34 +162,6 @@ const Camera = ({children}) => {
     }
   };
 
-  const zoomIn = () => {
-    // setCameraZoom(cameraZoom + 0.01 > 1 ? 1 : cameraZoom + 0.04);
-  };
-
-  const zoomOut = () => {
-    // setCameraZoom(cameraZoom - 0.1 < 0 ? 0 : cameraZoom - 0.1);
-  };
-
-  const takePicture = async () => {
-    if (cameraRef) {
-      const options = {quality: 0.5, width: 1024};
-      const data = await cameraRef.current.takePictureAsync(options);
-      let cropData = {
-        offset: {x: 0, y: 0},
-        size: {width: data.width, height: data.height},
-        displaySize: {
-          width: DEFAULT_IMAGE_WIDTH,
-          height: DEFAULT_IMAGE_HEIGHT,
-        },
-        resizeMode: 'cover',
-      };
-      measure();
-      // TO DO - fine tune cropping
-      let croppedImage = await ImageEditor.cropImage(data.uri, cropData);
-      addPhoto({id: `${Date.now()}`, uri: croppedImage});
-    }
-  };
-
   const onPinchStart = () => {
     prevPinch = 1;
   };
@@ -222,6 +195,44 @@ const Camera = ({children}) => {
     });
   };
 
+  const takePicture = async () => {
+    if (cameraRef) {
+      const options = {quality: 0.5, width: 1024};
+      const data = await cameraRef.current.takePictureAsync(options);
+      let cropData = {
+        offset: {x: 0, y: 0},
+        size: {width: data.width, height: data.height},
+        displaySize: {
+          width: DEFAULT_IMAGE_WIDTH,
+          height: DEFAULT_IMAGE_HEIGHT,
+        },
+        resizeMode: 'cover',
+      };
+      // measure();
+      // TO DO - fine tune cropping
+      let croppedImage = await ImageEditor.cropImage(data.uri, cropData);
+      console.log('takePicture -> croppedImage', croppedImage);
+      CameraRoll.save(croppedImage, {
+        type: 'photo',
+        album: 'CameraApp',
+        groupTypes: 'Album',
+      });
+      addPhoto({id: `${Date.now()}`, uri: croppedImage});
+    }
+  };
+
+  const openLibrary = async () => {
+    let fetchParams = {
+      first: 20,
+      groupTypes: 'Album',
+      groupName: 'CameraApp',
+      assetType: 'Photos',
+    };
+    console.log('get photos');
+    let photosAlbum = await CameraRoll.getPhotos(fetchParams);
+    console.log('openLibrary -> albums', photosAlbum);
+  };
+
   return (
     <View style={styles.container}>
       <RNCamera
@@ -243,6 +254,7 @@ const Camera = ({children}) => {
           flashIcon={flashIcons[flash]}
           whiteBalanceIcon={whiteBalanceIcons[whiteBalance]}
           gridIcon={gridIcons[grid]}
+          onLibraryPress={openLibrary}
         />
         <CameraMask>
           <ViewWithZoom

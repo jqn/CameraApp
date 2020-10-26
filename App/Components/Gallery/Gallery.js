@@ -1,4 +1,4 @@
-import React, {useContext, useState} from 'react';
+import React, {useContext, useState, useEffect} from 'react';
 import {
   Modal,
   StatusBar,
@@ -8,35 +8,13 @@ import {
 } from 'react-native';
 
 import {useNavigation} from '@react-navigation/native';
+import CameraRoll from '@react-native-community/cameraroll';
 
 import GridList from './GridList';
 import GalleryNav from './GalleryNav';
 import HorizontalSlider from '../HorizontalSlider/HorizontalSlider';
 
 import {PhotosContext} from '../../Utils/PhotosManager';
-
-const DATA = [
-  {
-    id: '1',
-    title: 'First Item',
-    src: require('../../Images/mountains.jpg'),
-  },
-  {
-    id: '2',
-    title: 'Second Item',
-    src: require('../../Images/flower-plant.jpg'),
-  },
-  {
-    id: '3',
-    title: 'Third Item',
-    src: require('../../Images/leaf.jpg'),
-  },
-  {
-    id: '4',
-    title: 'Fourth Item',
-    src: require('../../Images/medusa.jpg'),
-  },
-];
 
 const styles = StyleSheet.create({
   container: {
@@ -62,6 +40,20 @@ const Gallery = ({images}) => {
   const navigation = useNavigation();
 
   const {photos} = useContext(PhotosContext);
+
+  useEffect(() => {
+    const fetchPhotos = async () => {
+      let fetchParams = {
+        first: 20,
+        groupTypes: 'Album',
+        groupName: 'CameraApp',
+        assetType: 'Photos',
+      };
+      let photosAlbum = await CameraRoll.getPhotos(fetchParams);
+      console.log('fetchPhotos -> photosAlbum', photosAlbum);
+    };
+    fetchPhotos();
+  }, []);
 
   return (
     <View style={styles.container}>

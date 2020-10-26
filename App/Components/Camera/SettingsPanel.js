@@ -35,7 +35,7 @@ const SettingsPanel = ({
   onFlashPress,
   onWBalancePress,
   onGridPress,
-  onGalleryPress,
+  onLibraryPress,
   onSlidersPress,
   flashIcon = 'flash-off',
   whiteBalanceIcon = 'wb-auto',
@@ -76,7 +76,7 @@ const SettingsPanel = ({
         color="#FFF"
         size={35}
         style={styles.centerIcon}
-        onPress={onGalleryPress}
+        onPress={onLibraryPress}
       />
       <FontAwesome
         name="sliders"
