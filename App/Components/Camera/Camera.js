@@ -1,27 +1,47 @@
 import React, {useContext, useRef, useState, useEffect} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {Platform, StyleSheet, View} from 'react-native';
 
 import {RNCamera} from 'react-native-camera';
 import {useNavigation} from '@react-navigation/native';
 import ImageEditor from '@react-native-community/image-editor';
 import CameraRoll from '@react-native-community/cameraroll';
+import RNPermissions, {
+  NotificationsResponse,
+  Permission,
+  PERMISSIONS,
+  PermissionStatus,
+  RESULTS,
+} from 'react-native-permissions';
 
 import SettingsPanel from './SettingsPanel';
 import CameraMask from './CameraMask';
 import ControlPanel from './ControlPanel';
 import GridOverlay from '../GridOverlay/GridOverlay';
+import BasicLoader from '../Loader/BasicLoader';
 
 import {useDeviceOrientation, useScreenDimensions} from '../../hooks';
 import withCameraZoom from '../../HOCs/withCameraZoom';
 
 import {PhotosContext} from '../../Utils/PhotosManager';
 import {CameraContext} from '../../Utils/CameraManager';
+import {
+  checkPermission,
+  requestPermission,
+} from '../../Utils/permissionsService';
 
 const ViewWithZoom = withCameraZoom(View);
 
 const DEFAULT_IMAGE_HEIGHT = 768;
 const DEFAULT_IMAGE_WIDTH = 1024;
 const ZOOM_F = 0.1;
+
+const PLATFORM_PERMISSIONS = Platform.select({
+  ios: [PERMISSIONS.IOS.CAMERA, PERMISSIONS.IOS.PHOTO_LIBRARY_ADD_ONLY],
+  android: [
+    PERMISSIONS.ANDROID.CAMERA,
+    PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE,
+  ],
+});
 
 const styles = StyleSheet.create({
   rows: {
@@ -73,6 +93,9 @@ const Camera = ({children}) => {
   const [sliders, setSliders] = useState(false);
   const [thumbnail, setThumbnail] = useState(null);
   const [cameraZoom, setCameraZoom] = useState(0);
+  const [isLoading, setIsLoading] = useState(true);
+  const [libraryGranted, setLibraryGranted] = useState(false);
+  const [cameraGranted, setCameraGranted] = useState(null);
 
   const {photos, focusPoint, addPhoto, removePhotos} = useContext(
     PhotosContext,
@@ -83,6 +106,64 @@ const Camera = ({children}) => {
   const ref = React.useRef();
   let prevPinch = 1;
 
+  // useEffect(() => {
+  //   const checkPermissions = async () => {
+  //     const PERMISSIONS_VALUES = Object.values(PLATFORM_PERMISSIONS);
+  //     console.log('Camera -> PERMISSIONS_VALUES', PERMISSIONS_VALUES);
+  //     let statuses = await checkMultiplePermissions(PERMISSIONS_VALUES);
+  //     console.log('Camera -> isGranted', statuses);
+  //     setPermissions(statuses);
+  //   };
+  //   checkPermissions();
+  // }, []);
+
+  useEffect(() => {
+    const checkCameraPermission = async () => {
+      const [cameraPermission] = PLATFORM_PERMISSIONS;
+      let status = await checkPermission(cameraPermission);
+      setCameraGranted(status);
+    };
+    checkCameraPermission();
+  }, []);
+
+  useEffect(() => {
+    const requestCameraPermission = async () => {
+      const [cameraPermission] = PLATFORM_PERMISSIONS;
+      let status = await requestPermission(cameraPermission);
+      console.log('Camera -> request status', status);
+      setCameraGranted(status);
+    };
+    if (!cameraGranted) {
+      requestCameraPermission();
+    } else {
+      setIsLoading(false);
+    }
+  }, [cameraGranted]);
+
+  // useEffect(() => {
+  //   const checkLibraryPermission = async () => {
+  //     const [, libraryPermission] = PLATFORM_PERMISSIONS;
+  //     console.log('Camera -> libraryPermission', libraryPermission);
+  //     let status = await checkPermission(libraryPermission);
+  //     setLibraryGranted(status);
+  //   };
+  //   checkLibraryPermission();
+  // }, []);
+
+  useEffect(() => {
+    const requestLibraryPermission = async () => {
+      const [, libraryPermission] = PLATFORM_PERMISSIONS;
+      let status = await requestPermission(libraryPermission);
+      console.log('Camera -> request status', status);
+      setLibraryGranted(status);
+    };
+    if (!libraryGranted) {
+      requestLibraryPermission();
+    } else {
+      // setIsLoading(false);
+    }
+  }, [libraryGranted]);
+
   useEffect(() => {
     if (photos.length !== 0) {
       let thumbnailPhoto = photos.slice(-1);
@@ -91,6 +172,13 @@ const Camera = ({children}) => {
       setThumbnail(null);
     }
   }, [photos]);
+
+  const checkLibraryPermission = async () => {
+    const [, libraryPermission] = PLATFORM_PERMISSIONS;
+    console.log('Camera -> libraryPermission', libraryPermission);
+    let status = await checkPermission(libraryPermission);
+    setLibraryGranted(status);
+  };
 
   const measure = () => {
     if (ref.current) {
@@ -196,6 +284,10 @@ const Camera = ({children}) => {
   };
 
   const takePicture = async () => {
+    if (!libraryGranted) {
+      checkLibraryPermission();
+      return;
+    }
     if (cameraRef) {
       const options = {quality: 0.5, width: 1024};
       const data = await cameraRef.current.takePictureAsync(options);
@@ -220,6 +312,10 @@ const Camera = ({children}) => {
       addPhoto({id: `${Date.now()}`, uri: savedPhoto});
     }
   };
+
+  if (isLoading) {
+    return <BasicLoader />;
+  }
 
   return (
     <View style={styles.container}>

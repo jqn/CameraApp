@@ -9,12 +9,12 @@ import {
 
 import {useNavigation} from '@react-navigation/native';
 import CameraRoll from '@react-native-community/cameraroll';
+import CameraRollPicker from 'react-native-camera-roll-picker';
+import RNFS from 'react-native-fs';
 
 import GridList from './GridList';
 import GalleryNav from './GalleryNav';
 import HorizontalSlider from '../HorizontalSlider/HorizontalSlider';
-
-import {PhotosContext} from '../../Utils/PhotosManager';
 
 const styles = StyleSheet.create({
   container: {
@@ -45,22 +45,21 @@ const Gallery = () => {
   useEffect(() => {
     const fetchPhotos = async () => {
       let fetchParams = {
-        first: 20,
+        first: 100,
         groupTypes: 'Album',
         groupName: 'CameraApp',
         assetType: 'Photos',
       };
       let album = await CameraRoll.getPhotos(fetchParams);
       console.log('fetchPhotos -> photosAlbum', album);
-
       let photosList = album.edges.map((item) => {
         console.log('fetchPhotos -> item', item);
         return {id: `${Date.now()}`, uri: item.node.image.uri};
       });
       console.log('fetchPhotos -> photosList', photosList);
       setImageList(photosList);
-      console.log('waiting');
     };
+
     fetchPhotos();
   }, []);
 
