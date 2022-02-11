@@ -19,16 +19,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     bottom: -10,
   },
-  active: {
-    textAlign: 'center',
-    fontSize: 20,
-    color: '#5e5e5e',
-  },
-  inactive: {
-    textAlign: 'center',
-    fontWeight: 'normal',
-    color: '#bdc3c7',
-  },
   line: {
     paddingLeft: StyleSheet.hairlineWidth,
     color: '#FFF',

@@ -9,8 +9,6 @@ import {
 
 import {useNavigation} from '@react-navigation/native';
 import CameraRoll from '@react-native-community/cameraroll';
-import CameraRollPicker from 'react-native-camera-roll-picker';
-import RNFS from 'react-native-fs';
 
 import GridList from './GridList';
 import GalleryNav from './GalleryNav';
@@ -39,8 +37,6 @@ const Gallery = () => {
   const [imageList, setImageList] = useState([]);
 
   const navigation = useNavigation();
-
-  // const {photos} = useContext(PhotosContext);
 
   useEffect(() => {
     const fetchPhotos = async () => {

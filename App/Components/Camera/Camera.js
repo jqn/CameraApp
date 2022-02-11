@@ -5,13 +5,7 @@ import {RNCamera} from 'react-native-camera';
 import {useNavigation} from '@react-navigation/native';
 import ImageEditor from '@react-native-community/image-editor';
 import CameraRoll from '@react-native-community/cameraroll';
-import RNPermissions, {
-  NotificationsResponse,
-  Permission,
-  PERMISSIONS,
-  PermissionStatus,
-  RESULTS,
-} from 'react-native-permissions';
+import {PERMISSIONS} from 'react-native-permissions';
 
 import SettingsPanel from './SettingsPanel';
 import CameraMask from './CameraMask';
@@ -106,17 +100,6 @@ const Camera = ({children}) => {
   const ref = React.useRef();
   let prevPinch = 1;
 
-  // useEffect(() => {
-  //   const checkPermissions = async () => {
-  //     const PERMISSIONS_VALUES = Object.values(PLATFORM_PERMISSIONS);
-  //     console.log('Camera -> PERMISSIONS_VALUES', PERMISSIONS_VALUES);
-  //     let statuses = await checkMultiplePermissions(PERMISSIONS_VALUES);
-  //     console.log('Camera -> isGranted', statuses);
-  //     setPermissions(statuses);
-  //   };
-  //   checkPermissions();
-  // }, []);
-
   useEffect(() => {
     const checkCameraPermission = async () => {
       const [cameraPermission] = PLATFORM_PERMISSIONS;
@@ -140,16 +123,6 @@ const Camera = ({children}) => {
     }
   }, [cameraGranted]);
 
-  // useEffect(() => {
-  //   const checkLibraryPermission = async () => {
-  //     const [, libraryPermission] = PLATFORM_PERMISSIONS;
-  //     console.log('Camera -> libraryPermission', libraryPermission);
-  //     let status = await checkPermission(libraryPermission);
-  //     setLibraryGranted(status);
-  //   };
-  //   checkLibraryPermission();
-  // }, []);
-
   useEffect(() => {
     const requestLibraryPermission = async () => {
       const [, libraryPermission] = PLATFORM_PERMISSIONS;
@@ -159,8 +132,6 @@ const Camera = ({children}) => {
     };
     if (!libraryGranted) {
       requestLibraryPermission();
-    } else {
-      // setIsLoading(false);
     }
   }, [libraryGranted]);
 
@@ -178,22 +149,6 @@ const Camera = ({children}) => {
     console.log('Camera -> libraryPermission', libraryPermission);
     let status = await checkPermission(libraryPermission);
     setLibraryGranted(status);
-  };
-
-  const measure = () => {
-    if (ref.current) {
-      ref.current.measure((fx, fy, width, height, px, py) => {
-        const location = {
-          fx: fx,
-          fy: fy,
-          width: width,
-          height: height,
-          px: px,
-          py: py,
-        };
-        console.log(location);
-      });
-    }
   };
 
   const toggleCameraType = () => {
@@ -275,8 +230,6 @@ const Camera = ({children}) => {
   };
 
   const onSingleTap = (event) => {
-    console.log(screenData);
-    // measure();
     switchFocusPoint({
       x: event.nativeEvent.y / screenData.height,
       y: event.nativeEvent.x / screenData.width,
@@ -300,7 +253,6 @@ const Camera = ({children}) => {
         },
         resizeMode: 'cover',
       };
-      // measure();
       // TO DO - fine tune cropping
       let croppedImage = await ImageEditor.cropImage(data.uri, cropData);
       console.log('takePicture -> croppedImage', croppedImage);
@@ -358,16 +310,6 @@ const Camera = ({children}) => {
           thumbnail={thumbnail}
         />
       </RNCamera>
-      {/* <View
-        style={{
-          width: 8,
-          height: 8,
-          backgroundColor: 'red',
-          position: 'absolute',
-          bottom: 293,
-          left: 0,
-        }}
-      /> */}
     </View>
   );
 };
