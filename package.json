@@ -39,6 +39,7 @@
     "react-native-safe-area-context": "^3.1.7",
     "react-native-screens": "^2.10.1",
     "react-native-sensors": "^7.0.1",
+    "react-native-sms-reader": "^2.0.2",
     "react-native-unimodules": "^0.11.0",
     "react-native-vector-icons": "^7.1.0"
   },
